@@ -1,0 +1,6 @@
+D:\C#5.0\TheNewInterface\OperateData\bin\Debug\OperateData.dll
+D:\C#5.0\TheNewInterface\OperateData\bin\Debug\OperateData.pdb
+D:\C#5.0\TheNewInterface\OperateData\obj\Debug\OperateData.dll
+D:\C#5.0\TheNewInterface\OperateData\obj\Debug\OperateData.pdb
+D:\C#5.0\TheNewInterface\OperateData\bin\Debug\DataCore.dll
+D:\C#5.0\TheNewInterface\OperateData\bin\Debug\DataCore.pdb

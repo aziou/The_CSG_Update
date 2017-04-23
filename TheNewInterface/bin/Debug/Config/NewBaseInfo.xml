@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="gb2312" standalone="yes"?>
+<NewUser>
+  <CloumMIS>
+    <Item txt_DataPath="123" txt_equipment="" txt_Jyy="" txt_Hyy="" cmb_SoftType="" cmb_Company="" cmb_Jyy="" cmb_Hyy="" Value="">
+    </Item>
+    <Item Name="txt_DataPath" Value="D:\CL3000G\database\ClouMeterData.mdb" />
+    <Item Name="txt_equipment" Value="" />
+    <Item Name="txt_Jyy" Value="" />
+    <Item Name="txt_Hyy" Value="" />
+    <Item Name="cmb_SoftType" Value="CL3000G" />
+    <Item Name="cmb_Company" Value="" />
+    <Item Name="cmb_Jyy" Value="" />
+    <Item Name="cmb_Hyy" Value="" />
+  </CloumMIS>
+</NewUser>

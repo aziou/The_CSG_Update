@@ -1,0 +1,13 @@
+D:\C#5.0\TheNewInterface\SoftType_G\bin\Debug\SoftType_G.dll
+D:\C#5.0\TheNewInterface\SoftType_G\bin\Debug\SoftType_G.pdb
+D:\C#5.0\TheNewInterface\SoftType_G\obj\Debug\SoftType_G.dll
+D:\C#5.0\TheNewInterface\SoftType_G\obj\Debug\SoftType_G.pdb
+D:\C#5.0\TheNewInterface\SoftType_G\obj\Debug\SoftType_G.csprojResolveAssemblyReference.cache
+D:\C#5.0\TheNewInterface\SoftType_G\bin\Debug\DataCore.dll
+D:\C#5.0\TheNewInterface\SoftType_G\bin\Debug\Mis_Interface_Driver.dll
+D:\C#5.0\TheNewInterface\SoftType_G\bin\Debug\OperateData.dll
+D:\C#5.0\TheNewInterface\SoftType_G\bin\Debug\Driver_Interface.dll
+D:\C#5.0\TheNewInterface\SoftType_G\bin\Debug\DataCore.pdb
+D:\C#5.0\TheNewInterface\SoftType_G\bin\Debug\Mis_Interface_Driver.pdb
+D:\C#5.0\TheNewInterface\SoftType_G\bin\Debug\OperateData.pdb
+D:\C#5.0\TheNewInterface\SoftType_G\bin\Debug\Driver_Interface.pdb

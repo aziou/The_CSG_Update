@@ -1,0 +1,4 @@
+D:\C#5.0\TheNewInterface\SoftType_S\bin\Debug\SoftType_S.dll
+D:\C#5.0\TheNewInterface\SoftType_S\bin\Debug\SoftType_S.pdb
+D:\C#5.0\TheNewInterface\SoftType_S\obj\Debug\SoftType_S.dll
+D:\C#5.0\TheNewInterface\SoftType_S\obj\Debug\SoftType_S.pdb
