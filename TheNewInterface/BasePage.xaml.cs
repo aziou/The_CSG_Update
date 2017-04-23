@@ -37,7 +37,19 @@ namespace TheNewInterface
             cmb_SoftType.Items.Add("CL3000F");
             cmb_SoftType.Items.Add("CL3000DV80");
             //地区编号
+            //铅封加载
+            cmb_Seal01.Items.Add("左耳封");
+            cmb_Seal01.Items.Add("右耳封");
+            cmb_Seal01.Items.Add("编程小门");
 
+            cmb_Seal02.Items.Add("左耳封");
+            cmb_Seal02.Items.Add("右耳封");
+            cmb_Seal02.Items.Add("编程小门");
+
+            cmb_Seal03.Items.Add("左耳封");
+            cmb_Seal03.Items.Add("右耳封");
+            cmb_Seal03.Items.Add("编程小门");
+            //
             #endregion
             string strSection = "NewUser/CloumMIS/Item";
             txt_DataPath.Text = OperateData.FunctionXml.ReadElement(strSection, "Name", "txt_DataPath", "Value", "", BaseConfigPath);
@@ -47,6 +59,9 @@ namespace TheNewInterface
             cmb_SoftType.Text = OperateData.FunctionXml.ReadElement(strSection, "Name", "cmb_SoftType", "Value", "", BaseConfigPath);
             cmb_Company.Text = OperateData.FunctionXml.ReadElement(strSection, "Name", "cmb_Company", "Value", "", BaseConfigPath);
             cmb_Hyy.Text = OperateData.FunctionXml.ReadElement(strSection, "Name", "cmb_Hyy", "Value", "", BaseConfigPath);
+            cmb_Seal03.Text = OperateData.FunctionXml.ReadElement(strSection, "Name", "cmb_Seal03", "Value", "", BaseConfigPath);
+            cmb_Seal02.Text = OperateData.FunctionXml.ReadElement(strSection, "Name", "cmb_Seal02", "Value", "", BaseConfigPath);
+            cmb_Seal01.Text = OperateData.FunctionXml.ReadElement(strSection, "Name", "cmb_Seal01", "Value", "", BaseConfigPath);
         }
 
         #endregion
@@ -128,6 +143,14 @@ namespace TheNewInterface
 
 
             }
+            #region 数据库链接字符串
+            string LinkAccessWord = "";
+            string Sql_word_1 = "Provider=Microsoft.Jet.OleDb.4.0;Data Source=";
+            string Sql_word_2 = ";Persist Security Info=False";
+            LinkAccessWord = Sql_word_1 + txt_DataPath.Text.ToString().Trim() + Sql_word_2;
+            OperateData.FunctionXml.UpdateElement(strSection, "Name", "AccessLink", "Value", Sql_word_1+txt_DataPath.Text.ToString().Trim()+Sql_word_2, BaseConfigPath);
+
+            #endregion 
             this.Close();
         }
 

@@ -9,6 +9,20 @@ namespace DataCore
     public class MeterBaseInfoFactor : INotifyPropertyChanged
     {
 
+        private bool bolTerminalWorkNum=false;
+        public bool BolTerminalWorkNum
+        {
+            get
+            {
+                return bolTerminalWorkNum;
+            }
+            set
+            {
+                bolTerminalWorkNum = value;
+                OnPropertyChanged("BolTerminalWorkNum");
+            }
+        }
+
         private bool bolIfup;
         public bool BolIfup
         {

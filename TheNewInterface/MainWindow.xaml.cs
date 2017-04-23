@@ -13,6 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using DataCore;
 using System.Collections.ObjectModel;
+using System.Threading;
 
 namespace TheNewInterface
 {
@@ -36,7 +37,20 @@ namespace TheNewInterface
 
         private void btn_update_Click(object sender, RoutedEventArgs e)
         {
-
+            int MeterCount = ViewModel.AllMeterInfo.CreateInstance().MeterBaseInfo.Count;
+            List<string> UpDateMeterId=new List<string> ();
+            for (int i = 0; i < MeterCount; i++)
+            {
+                if (ViewModel.AllMeterInfo.CreateInstance().MeterBaseInfo[i].BolIfup == true)
+                {
+                    UpDateMeterId.Add(ViewModel.AllMeterInfo.CreateInstance().MeterBaseInfo[i].PK_LNG_METER_ID);
+                }
+            }
+            UpDateInfomation upinfo = new UpDateInfomation();
+            upinfo.Lis_PkId = UpDateMeterId;
+            SoftType_G.csFunction s_function = new SoftType_G.csFunction();
+            Thread UpdateThread = new Thread(new ParameterizedThreadStart(s_function.UpdateToOracle));
+            UpdateThread.Start(upinfo);
         }
 
         private void btn_download_Click(object sender, RoutedEventArgs e)
@@ -153,5 +167,42 @@ namespace TheNewInterface
                 }
             }
         }
+
+    
+
+        private void chk_Terminal_Click(object sender, RoutedEventArgs e)
+        {
+
+         
+            if (chk_SelectAll.IsChecked == true)
+            {
+                int count = dg_Info.Items.Count;
+                for (int i = 0; i < count; i++)
+                {
+                    ViewModel.AllMeterInfo.CreateInstance().MeterBaseInfo[i].BolTerminalWorkNum = true;
+                }
+            }
+            else
+            {
+                int count = dg_Info.Items.Count;
+                for (int i = 0; i < count; i++)
+                {
+                    ViewModel.AllMeterInfo.CreateInstance().MeterBaseInfo[i].BolTerminalWorkNum = false;
+                }
+            }
+        }
+
+        
+    }
+
+    public class UpDateInfomation
+    {
+        private List<string> lis_PkId;
+        public List<string> Lis_PkId
+        {
+            get;
+            set;
+        }
+
     }
 }

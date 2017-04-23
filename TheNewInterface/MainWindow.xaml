@@ -33,7 +33,7 @@
             <WrapPanel >
             <Label Width="80" Height="25"  Content="工作单号:" VerticalContentAlignment="Center"/>
             <ComboBox Width="200" Height="25" Name="cmb_WorkNumList"/>
-            <CheckBox Width="150" Height="25" Content="获取终端检定工作单" VerticalContentAlignment="Center" Margin="5,0,0,0"/>
+            <CheckBox Width="150" Height="25" Content="获取终端检定工作单" VerticalContentAlignment="Center" Margin="5,0,0,0" Name="chk_Terminal" Click="chk_Terminal_Click"/>
             <RadioButton Width="50" Height="25" Content="首检" IsChecked="True" GroupName="FirstCheck" VerticalContentAlignment="Center"/>
             <RadioButton Width="65" Height="25" Content="非首检" GroupName="FirstCheck" VerticalContentAlignment="Center"/>
             </WrapPanel>

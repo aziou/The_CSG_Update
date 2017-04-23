@@ -6,6 +6,8 @@ using System.Data.OleDb;
 using System.Data;
 using System.Collections.ObjectModel;
 using DataCore;
+using System.IO;
+using System.Data.OracleClient;
 namespace OperateData
 {
     public class PublicFunction
@@ -14,7 +16,8 @@ namespace OperateData
         public string Sql_word_2 = ";Persist Security Info=False";
         public readonly string BaseConfigPath = System.AppDomain.CurrentDomain.BaseDirectory + @"\config\NewBaseInfo.xml";
         public readonly string datapath = OperateData.FunctionXml.ReadElement("NewUser/CloumMIS/Item", "Name", "txt_DataPath", "Value", "", System.AppDomain.CurrentDomain.BaseDirectory + @"\config\NewBaseInfo.xml");
-           
+        public readonly string OracleLink = OperateData.FunctionXml.ReadElement("NewUser/CloumMIS/Item", "Name", "txt_DataPath", "Value", "", System.AppDomain.CurrentDomain.BaseDirectory + @"\config\NewBaseInfo.xml");
+       
         /// <summary>
         /// 执行access  _SQL
         /// </summary>
@@ -137,6 +140,165 @@ namespace OperateData
             }
             
         }
- 
+
+        /// <summary>
+        /// 写入本地日志文件
+        /// </summary>
+        /// <param name="ExceptLog">错误日志</param>
+        /// <param name="File_Path">存放目录</param>
+        public static void WriteLog(string ExceptLog, string File_Path)
+        {
+            if (!File.Exists(File_Path))
+            {
+                #region 创建新文件并且写下Log
+                FileStream fs = new FileStream(File_Path, FileMode.Create);
+                StreamWriter sw = new StreamWriter(fs);
+
+                try
+                {
+                    sw.WriteLine("{0} {1}", DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss"), ExceptLog);
+                    sw.Flush();
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
+                finally
+                {
+                    if (sw != null)
+                    {
+                        sw.Close();
+                    }
+                }
+
+                #endregion
+            }
+            else
+            {
+                #region 写入LOG
+                FileStream fs = new FileStream(File_Path, FileMode.Append);
+                StreamWriter sw = new StreamWriter(fs);
+
+                try
+                {
+                    sw.WriteLine("{0} {1}", DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss"), ExceptLog);
+                    sw.Flush();
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
+                finally
+                {
+                    if (sw != null)
+                    {
+                        sw.Close();
+                    }
+                }
+            
+                #endregion
+                
+            }
+        }
+
+       
+     
+
+        /// <summary>
+        /// 查询数据
+        /// </summary>
+        /// <param name="strOleDbConntion">数据库链接字符串</param>
+        /// <param name="strSQL">SQL语句</param>
+        /// <param name="strDbName">获取数据的字段名称</param>
+        /// <returns></returns>
+        public string GetSingleData(string strSQL, string strOleDbConntion, string strDbName)
+        {
+            string strResult = "";
+            OleDbConnection AccessConntion = new OleDbConnection(strOleDbConntion);
+            try
+            {
+                AccessConntion.Open();
+                OleDbCommand ccmd = new OleDbCommand(strSQL, AccessConntion);
+                OleDbDataReader red = ccmd.ExecuteReader();
+                if (red.Read() == true)
+                {
+                    strResult = red[strDbName].ToString().Trim();
+                }
+                red.Close();
+                AccessConntion.Close();
+                AccessConntion.Dispose();
+            }
+            catch { }
+            finally
+            {
+                AccessConntion.Close();
+            }
+            return strResult;
+        }
+        /// <summary>
+        /// 查询数据
+        /// </summary>
+        /// <param name="strSQL">SQL语句</param>
+        /// <param name="strOleDbConntion">数据库链接字符串</param>
+        /// <returns>返回第一个字段</returns>
+        public string GetSingleData(string strSQL, string strOleDbConntion)
+        {
+            string strResult = "";
+            OleDbConnection AccessConntion = new OleDbConnection(strOleDbConntion);
+            try
+            {
+                AccessConntion.Open();
+                OleDbCommand ccmd = new OleDbCommand(strSQL, AccessConntion);
+                OleDbDataReader red = ccmd.ExecuteReader();
+                if (red.Read() == true)
+                {
+                    strResult = red[0].ToString().Trim();
+                }
+                red.Close();
+                AccessConntion.Close();
+                AccessConntion.Dispose();
+            }
+            catch { }
+            finally
+            {
+                AccessConntion.Close();
+            }
+            return strResult;
+        }
+
+        
+
+        public static int ExcuteToOracle(List<string> sql, out string ExceptionStr)
+        {
+            int result = 0;
+            string OracleLink = OperateData.FunctionXml.ReadElement("NewUser/CloumMIS/Item", "Name", "txt_DataPath", "Value", "", System.AppDomain.CurrentDomain.BaseDirectory + @"\config\NewBaseInfo.xml");
+       
+            try
+            {
+                using (OracleConnection conn = new OracleConnection(OracleLink))
+                {
+                    if (conn.State == ConnectionState.Closed)
+                        conn.Open();
+                    foreach (String temp in sql)
+                    {
+                        OracleCommand cmd = new OracleCommand(temp, conn);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                    conn.Close();
+
+                }
+                ExceptionStr = "";
+                return result;
+            }
+            catch (Exception e)
+            {
+
+                ExceptionStr = e.ToString();
+                return -1;
+            }
+
+        }
+       
     }
 }
