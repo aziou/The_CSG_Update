@@ -14,6 +14,8 @@ using System.Windows.Shapes;
 using DataCore;
 using System.Collections.ObjectModel;
 using System.Threading;
+using System.Diagnostics;
+using System.Windows.Threading;
 
 namespace TheNewInterface
 {
@@ -28,6 +30,7 @@ namespace TheNewInterface
             this.DataContext = TheNewInterface.ViewModel.AllMeterInfo.CreateInstance();
            
         }
+        Thread UpdateThread;
         public readonly string BaseConfigPath = System.AppDomain.CurrentDomain.BaseDirectory + @"\config\NewBaseInfo.xml";
         private void Btn_Config_Click(object sender, RoutedEventArgs e)
         {
@@ -37,6 +40,14 @@ namespace TheNewInterface
 
         private void btn_update_Click(object sender, RoutedEventArgs e)
         {
+            //if (cmb_WorkNumList.Text.Trim() == "")
+            //{
+            //    MessageBox.Show("请选择工单号！");
+            //    return;
+            //}
+            //OperateData.FunctionXml.UpdateElement("NewUser/CloumMIS/Item", "Name", "TheWorkNum", "Value", cmb_WorkNumList.Text.ToString(), BaseConfigPath);
+            OperateData.FunctionXml.UpdateElement("NewUser/CloumMIS/Item", "Name", "TheWorkNum", "Value", "07522300987", BaseConfigPath);
+
             int MeterCount = ViewModel.AllMeterInfo.CreateInstance().MeterBaseInfo.Count;
             List<string> UpDateMeterId=new List<string> ();
             for (int i = 0; i < MeterCount; i++)
@@ -49,10 +60,100 @@ namespace TheNewInterface
             UpDateInfomation upinfo = new UpDateInfomation();
             upinfo.Lis_PkId = UpDateMeterId;
             SoftType_G.csFunction s_function = new SoftType_G.csFunction();
-            Thread UpdateThread = new Thread(new ParameterizedThreadStart(s_function.UpdateToOracle));
+            Thread UpdateThread = new Thread(new ParameterizedThreadStart(UpdateToOracle));
             UpdateThread.Start(upinfo);
         }
+        #region update
+        public void UpdateToOracle(object o)
+        {
+            UpDateInfomation Lis_Id = o as UpDateInfomation;
+            UpdateInfoThread(Lis_Id.Lis_PkId.Count, Lis_Id.Lis_PkId);
+        }
+        public void UpdateInfoThread(double countItem,List<string> lis_UP_ID)
+        {
+           
+            double i = 0;
+            int sleepTime = 0; ;
+            double t;
+            if (countItem >= 0 && countItem <= 10)
+            {
+                sleepTime = 500;
+            }
+            else if (countItem > 10 && countItem < 20)
+            {
+                sleepTime = 800;
+            }
+            else if (countItem > 20 && countItem < 35)
+            {
+                sleepTime = 3000;
+            }
+            else if (countItem > 40 && countItem < 50)
+            {
+                sleepTime = 1200;
+            }
+            else if (countItem > 50 && countItem <= 60)
+            {
+                sleepTime = 1400;
+            }
+            else
+            {
+                sleepTime = 100;
+            }
 
+            foreach (MeterBaseInfoFactor temp in ViewModel.AllMeterInfo.CreateInstance().MeterBaseInfo)
+            {
+
+                if (temp.BolIfup == true)
+                {
+                    t = i + 1;
+                    i = t < countItem ? t : countItem;
+
+                    listBox_UpInfo.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<string, double>(UpDateMeter), temp.PK_LNG_METER_ID, i);
+                    Thread.Sleep(sleepTime);
+                }
+            }
+            MessageBox.Show("成功上传 :" + countItem + "个表");
+            UpdateThread.Abort();
+        }
+
+        private void UpDateMeter(string Meter_ID, double progressCount)
+        {
+
+           
+
+           SoftType_G.csFunction cs_G_Function=new SoftType_G.csFunction();
+
+            Stopwatch watch = new Stopwatch();
+            watch.Start();
+
+
+            //zcbhList.Add(temp.AVR_ASSET_NO);
+            listBox_UpInfo.Items.Add(cs_G_Function.UpadataBaseInfo(Meter_ID));
+
+            listBox_UpInfo.Items.Add(cs_G_Function.UpdataErrorInfo(Meter_ID));
+
+            listBox_UpInfo.Items.Add(cs_G_Function.UpdataJKRJSWCInfo(Meter_ID));
+
+            listBox_UpInfo.Items.Add(cs_G_Function.UpdataJKXLWCJLInfo(Meter_ID));
+
+            listBox_UpInfo.Items.Add(cs_G_Function.UpdataSDTQWCJLInfo(Meter_ID));
+
+            listBox_UpInfo.Items.Add(cs_G_Function.UpdataDNBSSJLInfo(Meter_ID));
+
+            listBox_UpInfo.Items.Add(cs_G_Function.UpdataDNBZZJLInfo(Meter_ID));
+
+
+            this.UpdateProgress.Value = progressCount;
+            listBox_UpInfo.UpdateLayout();
+            listBox_UpInfo.ScrollIntoView(listBox_UpInfo.Items[listBox_UpInfo.Items.Count - 1]);
+            watch.Stop();
+            listBox_UpInfo.Items.Add("使用时间为：" + watch.ElapsedMilliseconds.ToString() + "毫秒");
+
+
+
+        } 
+        #endregion
+        
         private void btn_download_Click(object sender, RoutedEventArgs e)
         {
 
@@ -65,7 +166,8 @@ namespace TheNewInterface
 
         private void btn_MisConfig_Click(object sender, RoutedEventArgs e)
         {
-
+            OracleConfig oracleConfig = new OracleConfig();
+            oracleConfig.ShowDialog();
         }
 
         private void cmb_CheckTime_Loaded(object sender, RoutedEventArgs e)

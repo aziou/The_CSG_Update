@@ -271,33 +271,34 @@ namespace OperateData
         public static int ExcuteToOracle(List<string> sql, out string ExceptionStr)
         {
             int result = 0;
-            string OracleLink = OperateData.FunctionXml.ReadElement("NewUser/CloumMIS/Item", "Name", "txt_DataPath", "Value", "", System.AppDomain.CurrentDomain.BaseDirectory + @"\config\NewBaseInfo.xml");
+            //string OracleLink = OperateData.FunctionXml.ReadElement("NewUser/CloumMIS/Item", "Name", "txt_DataPath", "Value", "", System.AppDomain.CurrentDomain.BaseDirectory + @"\config\NewBaseInfo.xml");
        
-            try
-            {
-                using (OracleConnection conn = new OracleConnection(OracleLink))
-                {
-                    if (conn.State == ConnectionState.Closed)
-                        conn.Open();
-                    foreach (String temp in sql)
-                    {
-                        OracleCommand cmd = new OracleCommand(temp, conn);
+            //try
+            //{
+            //    using (OracleConnection conn = new OracleConnection(OracleLink))
+            //    {
+            //        if (conn.State == ConnectionState.Closed)
+            //            conn.Open();
+            //        foreach (String temp in sql)
+            //        {
+            //            OracleCommand cmd = new OracleCommand(temp, conn);
 
-                        cmd.ExecuteNonQuery();
-                    }
-                    conn.Close();
+            //            cmd.ExecuteNonQuery();
+            //        }
+            //        conn.Close();
 
-                }
-                ExceptionStr = "";
-                return result;
-            }
-            catch (Exception e)
-            {
+            //    }
+            //    ExceptionStr = "";
+            //    return result;
+            //}
+            //catch (Exception e)
+            //{
 
-                ExceptionStr = e.ToString();
-                return -1;
-            }
-
+            //    ExceptionStr = e.ToString();
+            //    return -1;
+            //}
+            ExceptionStr = "";
+            return result;
         }
        
     }

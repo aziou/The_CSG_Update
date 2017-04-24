@@ -16,10 +16,12 @@ namespace SoftType_G
         public readonly string BaseConfigPath = System.AppDomain.CurrentDomain.BaseDirectory + @"\config\NewBaseInfo.xml";
         public  readonly string datapath = OperateData.FunctionXml.ReadElement("NewUser/CloumMIS/Item", "Name", "txt_DataPath", "Value", "", System.AppDomain.CurrentDomain.BaseDirectory + @"\config\NewBaseInfo.xml");
 
-        public static readonly string AccessLink = "";
-        public static string str_GZDBH = "";
+        public static readonly string AccessLink = OperateData.FunctionXml.ReadElement("NewUser/CloumMIS/Item", "Name", "AccessLink", "Value", "", System.AppDomain.CurrentDomain.BaseDirectory + @"\config\NewBaseInfo.xml");
+
+        public static string str_GZDBH = OperateData.FunctionXml.ReadElement("NewUser/CloumMIS/Item", "Name", "TheWorkNum", "Value", "", System.AppDomain.CurrentDomain.BaseDirectory + @"\config\NewBaseInfo.xml");
+
         public static string str_pkId = "";
-        public static string str_DQBM = "";
+        public static string str_DQBM = OperateData.FunctionXml.ReadElement("NewUser/CloumMIS/Item", "Name", "cmb_Company", "Value", "", System.AppDomain.CurrentDomain.BaseDirectory + @"\config\NewBaseInfo.xml"), strMinIb = "", strMaxIb = "", strXBDM = "", strJDTime = "";
         public  ObservableCollection<MeterBaseInfoFactor> GetBaseInfo(string CheckTime, string SQL)
         {
             ObservableCollection<MeterBaseInfoFactor> Temp_Base = new ObservableCollection<MeterBaseInfoFactor>();
@@ -55,50 +57,262 @@ namespace SoftType_G
             }
         }
         public static string MeterZCBH="";
+        #region 上传数据
         public string UpadataBaseInfo(string PKid)
         {
-            int excuteSuccess=0;
+            int excuteSuccess = 0;
             string ErrorResult;
             List<string> mysql = new List<string>();
             try
             {
-                ObservableCollection<MeterBaseInfoFactor> tempBase = new ObservableCollection<MeterBaseInfoFactor>();
 
 
-                mysql=Get_VT_SB_JKDNBJDJL(PKid);
+                mysql = Get_VT_SB_JKDNBJDJL(PKid);
 
 
-                excuteSuccess= OperateData.PublicFunction.ExcuteToOracle(mysql, out ErrorResult);
-              
+                excuteSuccess = OperateData.PublicFunction.ExcuteToOracle(mysql, out ErrorResult);
+
                 if (excuteSuccess == 0)
                 {
 
-                    return "基本信息上传到Mysql成功！";
+                    return MeterZCBH + "基本信息上传到中间库成功！";
                 }
                 else
                 {
-                    return "基本信息上传到Mysql失败！" + ErrorResult;
+                    return MeterZCBH + "基本信息上传到中间库失败！" + ErrorResult;
                 }
 
 
             }
             catch (Exception e)
             {
-                return "基本信息上传到Mysql失败！" + e.ToString();
+                return MeterZCBH + "基本信息上传到中间库失败！" + e.ToString();
             }
 
 
         }
 
+        public string UpdataErrorInfo(string OnlyIdNum)
+        {
+
+            int excuteSuccess;
+            string ErrorReason;
+            List<string> mysql = new List<string>();
+            try
+            {
+
+                mysql = Get_VT_SB_JKDNBJDWC(OnlyIdNum);
+
+
+
+                excuteSuccess = OperateData.PublicFunction.ExcuteToOracle(mysql, out ErrorReason);
+                if (excuteSuccess == 0)
+                {
+                    return "基本误差上传到中间库成功！";
+                }
+                else
+                {
+                    return "基本误差上传到中间库失败！" + ErrorReason;
+                }
+
+
+
+
+            }
+            catch (Exception e)
+            {
+                return "基本误差上传到中间库失败！" + e.ToString();
+            }
+
+
+        }
+
+        public string UpdataJKRJSWCInfo(string OnlyIdNum)
+        {
+
+            int excuteSuccess;
+            string ErrorReason;
+            List<string> mysql = new List<string>();
+            try
+            {
+
+                mysql = Get_VT_SB_JKRJSWC(OnlyIdNum);
+
+
+
+                excuteSuccess = OperateData.PublicFunction.ExcuteToOracle(mysql, out ErrorReason);
+                if (excuteSuccess == 0)
+                {
+                    return "日计时数据上传到中间库成功！";
+                }
+                else
+                {
+                    return "日计时数据上传到中间库失败！" + ErrorReason;
+                }
+
+
+
+
+            }
+            catch (Exception e)
+            {
+                return "日计时数据上传到中间库失败！" + e.ToString();
+            }
+
+
+        }
+
+        public string UpdataJKXLWCJLInfo(string OnlyIdNum)
+        {
+
+            int excuteSuccess;
+            string ErrorReason;
+            List<string> mysql = new List<string>();
+            try
+            {
+
+                mysql = Get_VT_SB_JKXLWCJL(OnlyIdNum);
+
+
+
+                excuteSuccess = OperateData.PublicFunction.ExcuteToOracle(mysql, out ErrorReason);
+                if (excuteSuccess == 0)
+                {
+                    return "电表需量数据上传到中间库成功！";
+                }
+                else
+                {
+                    return "电表需量数据上传到中间库失败！" + ErrorReason;
+                }
+
+
+
+
+            }
+            catch (Exception e)
+            {
+                return "电表需量数据上传到中间库失败！" + e.ToString();
+            }
+
+
+        }
+
+        public string UpdataSDTQWCJLInfo(string OnlyIdNum)
+        {
+
+            int excuteSuccess;
+            string ErrorReason;
+            List<string> mysql = new List<string>();
+            try
+            {
+
+                mysql = Get_VT_SB_JKSDTQWCJL(OnlyIdNum);
+
+
+
+                excuteSuccess = OperateData.PublicFunction.ExcuteToOracle(mysql, out ErrorReason);
+                if (excuteSuccess == 0)
+                {
+                    return "时段投切数据上传到中间库成功！";
+                }
+                else
+                {
+                    return "时段投切数据上传到中间库失败！" + ErrorReason;
+                }
+
+
+
+
+            }
+            catch (Exception e)
+            {
+                return "时段投切数据上传到中间库失败！" + e.ToString();
+            }
+
+
+        }
+
+        public string UpdataDNBSSJLInfo(string OnlyIdNum)
+        {
+
+            int excuteSuccess;
+            string ErrorReason;
+            List<string> mysql = new List<string>();
+            try
+            {
+
+                mysql = Get_VT_SB_JKDNBSSJL(OnlyIdNum);
+
+
+
+                excuteSuccess = OperateData.PublicFunction.ExcuteToOracle(mysql, out ErrorReason);
+                if (excuteSuccess == 0)
+                {
+                    return "电表底度上传到中间库成功！";
+                }
+                else
+                {
+                    return "电表底度上传到中间库失败！" + ErrorReason;
+                }
+
+
+
+
+            }
+            catch (Exception e)
+            {
+                return "电表底度上传到中间库失败！" + e.ToString();
+            }
+
+
+        }
+
+        public string UpdataDNBZZJLInfo(string OnlyIdNum)
+        {
+
+            int excuteSuccess;
+            string ErrorReason;
+            List<string> mysql = new List<string>();
+            try
+            {
+
+                mysql = VT_SB_JKDNBZZJL(OnlyIdNum);
+
+
+
+                excuteSuccess = OperateData.PublicFunction.ExcuteToOracle(mysql, out ErrorReason);
+                if (excuteSuccess == 0)
+                {
+                    return "电表走字数据上传到中间库成功！";
+                }
+                else
+                {
+                    return "电表走字数据上传到中间库失败！" + ErrorReason;
+                }
+
+
+
+
+            }
+            catch (Exception e)
+            {
+                return "电表走字数据上传到中间库失败！" + e.ToString();
+            }
+
+
+        }
+
+#endregion
+       
         /// <summary>
         /// 电能表检定记录
         /// </summary>
         /// <returns></returns>
         private static List<string> Get_VT_SB_JKDNBJDJL(string str_PkID)
         {
-            bool blnOK = true;
+           
             List<string> lis_Sql = new List<string>();
-            string strJDTime = "", strXBDM = "", strMinIb = "", strMaxIb="";
+         
             string strSQL = "SELECT * FROM meterinfo where intMyId=" + str_PkID + "";
             OleDbConnection AccessConntion = new OleDbConnection(AccessLink);
             AccessConntion.Open();
@@ -214,8 +428,11 @@ namespace SoftType_G
 
                 strOracleSQL_Name = strOracleSQL_Name + "QDSYDYZ,";  //潜动试验电压值
                 strValue = Get_METER_START_NO_LOAD("0006", "chrProjectName");
-                strValue = strValue.Substring(strValue.LastIndexOf("动") + 1, strValue.Length - strValue.LastIndexOf("动") - 1);
-                strValue = (Convert.ToDouble(strValue.Trim('%')) / 100 * double.Parse(OldRead["chrUb"].ToString().Trim())).ToString().Trim();
+                if (strValue != "") {
+                    strValue = strValue.Substring(strValue.LastIndexOf("动") + 1, strValue.Length - strValue.LastIndexOf("动") - 1);
+                    strValue = (Convert.ToDouble(strValue.Trim('%')) / 100 * double.Parse(OldRead["chrUb"].ToString().Trim())).ToString().Trim();
+               
+                }
                 strOracleSQL_Value = strOracleSQL_Value + "','" + strValue;
                 strOracleSQL_Name = strOracleSQL_Name + "FQDLZ,";  //防潜电流值
                 strOracleSQL_Value = strOracleSQL_Value + "','0";
@@ -412,6 +629,547 @@ namespace SoftType_G
 
         }
         /// <summary>
+        /// 电能表误差记录
+        /// </summary>
+        /// <returns></returns>
+        private static List<string> Get_VT_SB_JKDNBJDWC(string str_PkID)
+        {
+            
+            List<string> list_SQL = new List<string>();
+            string strSQL = "SELECT * FROM METERERROR WHERE  intMyId=" + str_PkID + "";
+            string strValue = "";
+            string strOracleSQL_Name = "";
+            string strOracleSQL_Value = "";
+            string strOracleSQL = "insert into VT_SB_JKDNBJDWC (";
+
+            OleDbConnection AccessConntion = new OleDbConnection(AccessLink);
+            try
+            {
+                AccessConntion.Open();
+                OleDbCommand ccmd = new OleDbCommand(strSQL, AccessConntion);
+
+
+                OleDbDataReader red = ccmd.ExecuteReader();
+                while (red.Read() == true)
+                {
+                    strOracleSQL_Name = strOracleSQL_Name + "GZDBH,";   //工作单编号
+                    strOracleSQL_Value = strOracleSQL_Value + "'" + str_GZDBH;
+                    strOracleSQL_Name = strOracleSQL_Name + "ZCBH,";   //资产编号
+                    strOracleSQL_Value = strOracleSQL_Value + "','" + MeterZCBH;
+
+                    strOracleSQL_Name = strOracleSQL_Name + "GLFXDM,";   //功率方向代码
+                    strValue = Get_GLFXDM(red["intWcLb"].ToString().Trim());
+                    strOracleSQL_Value = strOracleSQL_Value + "','" + strValue;
+                    strOracleSQL_Name = strOracleSQL_Name + "GLYSDM,";   //功率因数代码
+                    strValue = Get_GLYSDM(red["chrglys"].ToString().Trim());
+                    strOracleSQL_Value = strOracleSQL_Value + "','" + strValue;
+                    strOracleSQL_Name = strOracleSQL_Name + "FZDLDM,";   //负载电流代码
+                    strValue = Get_FZDLDM(red["dblxIb"].ToString().Trim());
+                    //double test = Convert.ToDouble(red["dblxIb"].ToString().Trim());
+                    string DLBS = red["chrProjectNo"].ToString().Trim().Substring(1, 3);
+                    int test = Convert.ToInt16(red["chrProjectNo"].ToString().Trim().Substring(1, 3)) / 5;
+                    if ((Convert.ToDouble(strMinIb) * 2 == Convert.ToDouble(strMaxIb)) && (test == 21 || test == 34 || test == 47 || test == 60 || test == 81))
+                    {
+                        strOracleSQL_Name = "";
+                        strOracleSQL_Value = "";
+                        strOracleSQL = "insert into VT_SB_JKDNBJDWC (";
+                        continue;
+                    }
+
+                    if (Convert.ToDouble(red["dblxIb"].ToString().Trim()) > 1)
+                    {
+                        if (((int)(Convert.ToDouble(strMinIb) * Convert.ToDouble(red["dblxIb"].ToString().Trim()) + 0.5)).ToString() == strMaxIb)
+                        {
+                            strValue = Get_FZDLDM("IMAX");
+                        }
+                        else
+                        {
+                            strValue = Get_FZDLDM("0.5IMAX");
+
+                        }
+                    }
+                    strOracleSQL_Value = strOracleSQL_Value + "','" + strValue;
+
+                    strOracleSQL_Name = strOracleSQL_Name + "XBDM,";   //相别代码 三相、单相
+                    strValue = Get_XBDM(strXBDM);
+                    strOracleSQL_Value = strOracleSQL_Value + "','" + strValue;
+                    strOracleSQL_Name = strOracleSQL_Name + "FZLXDM,";   //负载类型代码 平衡 与 不平衡
+                    strValue = Get_FZLXDM(red["intYj"].ToString().Trim());
+                    strOracleSQL_Value = strOracleSQL_Value + "','" + strValue;
+
+                    strOracleSQL_Name = strOracleSQL_Name + "FYDM,";   //分元代码
+                    strValue = Get_FZLXDM(red["intYj"].ToString().Trim());
+                    strOracleSQL_Value = strOracleSQL_Value + "','" + strValue;
+
+                    strOracleSQL_Name = strOracleSQL_Name + "WCZ1,";   //WC1
+                    strValue = red["chrWc0"].ToString().Trim();
+                    if (strValue != "")
+                        strOracleSQL_Value = strOracleSQL_Value + "','" + strValue;
+                    else
+                        strOracleSQL_Value = strOracleSQL_Value + "','" + "+0.0000";
+                    strOracleSQL_Name = strOracleSQL_Name + "WCZ2,";   //WC2
+                    strValue = red["chrWc1"].ToString().Trim();
+                    if (strValue != "")
+                        strOracleSQL_Value = strOracleSQL_Value + "','" + strValue;
+                    else
+                        strOracleSQL_Value = strOracleSQL_Value + "','" + "+0.0000";
+
+                    strOracleSQL_Name = strOracleSQL_Name + "WCZ3,";   //WC3
+                    strValue = red["chrWc2"].ToString().Trim();
+                    strOracleSQL_Value = strOracleSQL_Value + "','" + strValue;
+
+                    strOracleSQL_Name = strOracleSQL_Name + "WCZ4,";   //WC4
+                    strValue = red["chrWc3"].ToString().Trim();
+                    strOracleSQL_Value = strOracleSQL_Value + "','" + strValue;
+
+                    strOracleSQL_Name = strOracleSQL_Name + "WCZ5,";   //WC5
+                    strValue = red["chrWc4"].ToString().Trim();
+                    strOracleSQL_Value = strOracleSQL_Value + "','" + strValue;
+
+                    strOracleSQL_Name = strOracleSQL_Name + "WCPJZ,";  //误差平均值
+                    strValue = red["chrWc"].ToString().Trim();
+                    if (strValue != "")
+                        strOracleSQL_Value = strOracleSQL_Value + "','" + strValue;
+                    else
+                        strOracleSQL_Value = strOracleSQL_Value + "','" + "+0.0000";
+
+                    strOracleSQL_Name = strOracleSQL_Name + "WCXYZ,";  //误差修约值
+                    strValue = red["chrWcHz"].ToString().Trim();
+                    if (strValue != "")
+                        strOracleSQL_Value = strOracleSQL_Value + "','" + strValue;
+                    else
+                        strOracleSQL_Value = strOracleSQL_Value + "','" + "+0.0";
+
+
+                    strOracleSQL_Name = strOracleSQL_Name + "JLDM,";   //结论代码
+                    strValue = ResultsCode(red["chrWcJl"].ToString().Trim());
+                    strOracleSQL_Value = strOracleSQL_Value + "','" + strValue;
+
+
+                    strOracleSQL_Name = strOracleSQL_Name + "WCCZ,";   //不平衡负载与平衡负载的误差差值
+                    strValue = red["chrWc11"].ToString().Trim();
+                    strOracleSQL_Value = strOracleSQL_Value + "','" + strValue;
+
+                    strOracleSQL_Name = strOracleSQL_Name + "WCCZXYZ,";   //误差差值修约值
+                    strValue = red["chrWc12"].ToString().Trim();
+                    strOracleSQL_Value = strOracleSQL_Value + "','" + strValue;
+
+                    strOracleSQL_Name = strOracleSQL_Name + "DQBM";  //地区编码
+                    strOracleSQL_Value = strOracleSQL_Value + "','" + str_DQBM+ "'";
+
+
+                    strOracleSQL = strOracleSQL + strOracleSQL_Name + ")  Values (" + strOracleSQL_Value + ")";
+                    list_SQL.Add(strOracleSQL);
+                    strOracleSQL_Name = "";
+                    strOracleSQL_Value = "";
+                    strOracleSQL = "insert into VT_SB_JKDNBJDWC (";
+
+                }
+                red.Close();
+                AccessConntion.Close();
+                AccessConntion.Dispose();
+
+                //
+            }
+            catch (Exception error) { }
+            finally
+            {
+                AccessConntion.Close();
+            }
+
+
+            return list_SQL;
+        }
+
+        /// <summary>
+        /// 日计量误差记录
+        /// </summary>
+        /// <returns></returns>
+        private static List<string> Get_VT_SB_JKRJSWC(string PKId)
+        {
+            
+            List<string> list_SQL = new List<string>();
+            string strSQL = "";
+            string strValue = "";
+            string strOracleSQL_Name = "";
+            string strOracleSQL_Value = "";
+            string strOracleSQL = "insert into VT_SB_JKRJSWC (";
+
+            try
+            {
+                strValue = Get_METER_COMMUNICATION("202");
+                if (strValue.IndexOf(",") > 0)  //有误差值
+                {
+                    strOracleSQL_Name = strOracleSQL_Name + "GZDBH,";   //工作单编号
+                    strOracleSQL_Value = strOracleSQL_Value + "'" +str_GZDBH;
+                    strOracleSQL_Name = strOracleSQL_Name + "ZCBH,";   //资产编号
+                    strOracleSQL_Value = strOracleSQL_Value + "','" + MeterZCBH;
+
+
+                    char[] csplit = { ',' };
+                    string[] strParm = null;
+                    strParm = strValue.Split(csplit);
+                    strOracleSQL_Name = strOracleSQL_Name + "CSZ1,";   //误差1
+                    if (strParm.Length > 1)
+                        strOracleSQL_Value = strOracleSQL_Value + "','" + strParm[0];
+                    else
+                        strOracleSQL_Value = strOracleSQL_Value + "','";
+
+                    strOracleSQL_Name = strOracleSQL_Name + "CSZ2,";   //误差2
+                    if (strParm.Length > 2)
+                        strOracleSQL_Value = strOracleSQL_Value + "','" + strParm[1];
+                    else
+                        strOracleSQL_Value = strOracleSQL_Value + "','";
+
+                    strOracleSQL_Name = strOracleSQL_Name + "CSZ3,";   //误差3
+                    if (strParm.Length > 3)
+                        strOracleSQL_Value = strOracleSQL_Value + "','" + strParm[2];
+                    else
+                        strOracleSQL_Value = strOracleSQL_Value + "','";
+                    strOracleSQL_Name = strOracleSQL_Name + "CSZ4,";   //误差4
+                    if (strParm.Length > 4)
+                        strOracleSQL_Value = strOracleSQL_Value + "','" + strParm[3];
+                    else
+                        strOracleSQL_Value = strOracleSQL_Value + "','";
+
+                    strOracleSQL_Name = strOracleSQL_Name + "CSZ5,";   //误差5
+                    if (strParm.Length > 5)
+                        strOracleSQL_Value = strOracleSQL_Value + "','" + strParm[4];
+                    else
+                        strOracleSQL_Value = strOracleSQL_Value + "','";
+
+
+                    //平均值与 化整值
+                    if (Get_METER_COMMUNICATION("102") != "")  //有误差值
+                    {
+
+                        strOracleSQL_Name = strOracleSQL_Name + "PJZ,";   //平均值
+
+                        strOracleSQL_Value = strOracleSQL_Value + "','" + Get_METER_COMMUNICATION("102").ToString().Trim();
+                    }
+                    else
+                    {
+                        strOracleSQL_Name = strOracleSQL_Name + "PJZ,";   //平均值
+
+                        strOracleSQL_Value = strOracleSQL_Value + "','" + "+0.000";
+                    }
+                    strOracleSQL_Name = strOracleSQL_Name + "DQBM";   //地区编码
+                    strOracleSQL_Value = strOracleSQL_Value + "','" + str_DQBM + "'";
+
+
+                    strOracleSQL = strOracleSQL + strOracleSQL_Name + ")  Values (" + strOracleSQL_Value + ")";
+                    list_SQL.Add(strOracleSQL);
+                    strOracleSQL_Name = "";
+                    strOracleSQL_Value = "";
+                    strOracleSQL = "insert into VT_SB_JKRJSWC (";
+                }
+
+            }
+            catch { }
+
+            return list_SQL;
+        }
+
+        /// <summary>
+        /// 电能表需量记录表
+        /// </summary>
+        /// <returns></returns>
+        private static List<string> Get_VT_SB_JKXLWCJL(string pk_ID)
+        {
+            
+            List<string> list_sql = new List<string>();
+            string strSQL = "";
+            string strValue = "";
+            string strOracleSQL_Name = "";
+            string strOracleSQL_Value = "";
+            string strOracleSQL = "insert into VT_SB_JKXLWCJL (";
+
+            try
+            {
+                for (int iCirc = 16; iCirc < 19; iCirc++)
+                {
+                    strValue = "1" + iCirc.ToString();    //01701/01801/01901
+                    strValue = Get_METER_COMMUNICATION(strValue);
+                    if (strValue.IndexOf(",") > 0)  //有误差值
+                    {
+                        char[] csplit = { ',' };
+                        string[] strParm = null;
+                        strParm = strValue.Split(csplit);
+
+                        strOracleSQL_Name = strOracleSQL_Name + "GZDBH,";   //工作单编号
+                        strOracleSQL_Value = strOracleSQL_Value + "'" + str_GZDBH;
+                        strOracleSQL_Name = strOracleSQL_Name + "ZCBH,";   //资产编号
+                        strOracleSQL_Value = strOracleSQL_Value + "','" + MeterZCBH;
+                        if (iCirc == 16) strValue = "02";   //0.1IB
+                        if (iCirc == 17) strValue = "05";   //IB
+                        if (iCirc == 18) strValue = "06";   //Imax
+                        strOracleSQL_Name = strOracleSQL_Name + "FZDLDM,";   //负载电流代码
+                        strOracleSQL_Value = strOracleSQL_Value + "','" + strValue;
+
+
+                        strOracleSQL_Name = strOracleSQL_Name + "BZZDXL,";   //标准最大需量
+                        if (strParm.Length > 1)
+                            strOracleSQL_Value = strOracleSQL_Value + "','" + strParm[0];
+                        else
+                            strOracleSQL_Value = strOracleSQL_Value + "','";
+
+                        strOracleSQL_Name = strOracleSQL_Name + "SJXL,";   //实际需量
+                        if (strParm.Length > 2)
+                            strOracleSQL_Value = strOracleSQL_Value + "','" + strParm[1];
+                        else
+                            strOracleSQL_Value = strOracleSQL_Value + "','";
+
+                        strOracleSQL_Name = strOracleSQL_Name + "WCZ,";   //误差值
+                        if (strParm.Length >= 3)
+                            strOracleSQL_Value = strOracleSQL_Value + "','" + strParm[2];
+                        else
+                            strOracleSQL_Value = strOracleSQL_Value + "','";
+
+
+                        strValue = ResultsCode(Get_METER_COMMUNICATION("0" + iCirc.ToString().Trim()));//结论代码
+                        strOracleSQL_Name = strOracleSQL_Name + "JLDM,";
+                        strOracleSQL_Value = strOracleSQL_Value + "','" + strValue + "','";
+
+                        strOracleSQL_Name = strOracleSQL_Name + "DQBM";   //地区编码
+                        strOracleSQL_Value = strOracleSQL_Value + str_DQBM + "'";
+
+
+                        strOracleSQL = strOracleSQL + strOracleSQL_Name + ")  Values (" + strOracleSQL_Value + ")";
+                        list_sql.Add(strOracleSQL);
+                        strOracleSQL_Name = "";
+                        strOracleSQL_Value = "";
+                        strOracleSQL = "insert into VT_SB_JKXLWCJL (";
+
+                    }
+                }
+            }
+            catch { }
+
+            return list_sql;
+        }
+
+        /// <summary>
+        /// 电能表投切记录表
+        /// </summary>
+        /// <returns></returns>
+        private static List<string> Get_VT_SB_JKSDTQWCJL(string PK_ID)
+        {
+            
+            List<string> list_sql = new List<string>();
+            string strValue = "";
+            string strOracleSQL_Name = "";
+            string strOracleSQL_Value = "";
+            string strOracleSQL = "insert into VT_SB_JKSDTQWCJL (";
+
+            try
+            {
+                for (int iCirc = 1; iCirc < 9; iCirc++)
+                {
+                    strValue = iCirc.ToString() + "03";    //01701/01801/01901
+                    strValue = Get_METER_COMMUNICATION(strValue);
+                    if (strValue.IndexOf(",") > 0)  //有误差值
+                    {
+                        char[] csplit = { ',' };
+                        string[] strParm = null;
+                        strParm = strValue.Split(csplit);
+                        if (strParm.Length >= 4)
+                        {
+                            strOracleSQL_Name = strOracleSQL_Name + "GZDBH,";   //工作单编号
+                            strOracleSQL_Value = strOracleSQL_Value + "'" + str_GZDBH;
+                            strOracleSQL_Name = strOracleSQL_Name + "ZCBH,";   //资产编号
+                            strOracleSQL_Value = strOracleSQL_Value + "','" + MeterZCBH;
+
+                            strOracleSQL_Name = strOracleSQL_Name + "SD,";   //时段
+                            strOracleSQL_Value = strOracleSQL_Value + "','" + strParm[3] + "时段";
+
+
+                            strOracleSQL_Name = strOracleSQL_Name + "BZTQSJ,";   //标准投切时间
+                            if (strParm.Length > 1)
+                                strOracleSQL_Value = strOracleSQL_Value + "','" + strParm[0];
+                            else
+                                strOracleSQL_Value = strOracleSQL_Value + "','";
+
+                            strOracleSQL_Name = strOracleSQL_Name + "SJTQSJ,";   //实际投切时间
+                            if (strParm.Length > 2)
+                                strOracleSQL_Value = strOracleSQL_Value + "','" + strParm[1];
+                            else
+                                strOracleSQL_Value = strOracleSQL_Value + "','";
+
+                            strOracleSQL_Name = strOracleSQL_Name + "TQWC,";   //投切误差
+                            if (strParm.Length >= 3)
+                                strOracleSQL_Value = strOracleSQL_Value + "','" + strParm[2];
+                            else
+                                strOracleSQL_Value = strOracleSQL_Value + "','";
+
+
+                            strOracleSQL_Name = strOracleSQL_Name + "DQBM";   //地区编码
+                            strOracleSQL_Value = strOracleSQL_Value + "','" + str_DQBM+ "'";
+
+
+                            strOracleSQL = strOracleSQL + strOracleSQL_Name + ")  Values (" + strOracleSQL_Value + ")";
+
+                            list_sql.Add(strOracleSQL);
+                            strOracleSQL_Name = "";
+                            strOracleSQL_Value = "";
+                            strOracleSQL = "insert into VT_SB_JKSDTQWCJL (";
+                        }
+                    }
+                }
+            }
+            catch { }
+
+
+
+
+            return list_sql;
+        }
+
+        /// <summary>
+        /// 电能表示数记录表
+        /// </summary>
+        /// <returns></returns>
+        private static List<string> Get_VT_SB_JKDNBSSJL(string PK_IDL)
+        {
+            
+            List<string> list_sql = new List<string>();
+            string strValue = "";
+            string strTypeCode = "";
+            string strSQL = "select * from meterdgn  where  	FK_LNG_METER_ID='" + PK_IDL + "'";
+            string strOracleSQL_Name = "";
+            string strOracleSQL_Value = "";
+            string strOracleSQL = "insert into VT_SB_JKDNBSSJL (";
+
+            try
+            {
+                for (int iCirc = 1; iCirc < 5; iCirc++)
+                {
+
+                    strTypeCode = iCirc.ToString().Trim() + "19";    //119正向有功 /219反向有功 /319正向无功/419反向无功
+
+                    strValue = Get_METER_COMMUNICATION(strTypeCode);
+                    if (strValue.IndexOf(",") > 0)  //有误差值
+                    {
+                        char[] csplit = { ',' };
+                        string[] strParm = null;
+                        strParm = strValue.Split(csplit);
+                        if (strParm.Length >= 4)
+                        {
+                            for (int iCircLx = 0; iCircLx < 4; iCircLx++) //总，峰，平，谷，尖
+                            {
+                                strOracleSQL_Name = strOracleSQL_Name + "GZDBH,";   //工作单编号
+                                strOracleSQL_Value = strOracleSQL_Value + "'" + str_GZDBH;
+                                strOracleSQL_Name = strOracleSQL_Name + "ZCBH,";   //资产编号
+                                strOracleSQL_Value = strOracleSQL_Value + "','" + MeterZCBH;
+
+                                strOracleSQL_Name = strOracleSQL_Name + "SSLXDM,";   //示数类型代码
+                                strValue = iCirc.ToString().Trim() + iCircLx.ToString().Trim();
+                                strValue = Get_SSLXDM(strValue);
+                                strOracleSQL_Value = strOracleSQL_Value + "','" + strValue;
+                                strOracleSQL_Name = strOracleSQL_Name + "DQBM,";   //地区编码
+                                strOracleSQL_Value = strOracleSQL_Value + "','" + str_DQBM;
+
+
+                                strOracleSQL_Name = strOracleSQL_Name + "BSS,";  // 抄表日期----检定日期代替 
+                                strValue = strParm[iCircLx];
+                                strOracleSQL_Value = strOracleSQL_Value + "','" + strValue;
+
+                                strOracleSQL_Name = strOracleSQL_Name + "CBSJ";  //抄表时间----检定日期代替
+                                strValue = strJDTime;
+                                strOracleSQL_Value = strOracleSQL_Value + "',to_date('" + strValue + "','yyyy-mm-dd hh24:mi:ss')";
+
+                                strOracleSQL = strOracleSQL + strOracleSQL_Name + ")  Values (" + strOracleSQL_Value + ")";
+
+                                list_sql.Add(strOracleSQL);
+                                strOracleSQL_Name = "";
+                                strOracleSQL_Value = "";
+                                strOracleSQL = "insert into VT_SB_JKDNBSSJL (";
+
+
+                            }
+                        }
+                    }
+                }
+            }
+            catch { }
+            return list_sql;
+        }
+
+        /// <summary>
+        /// 电能表走字记录表
+        /// </summary>
+        /// <returns></returns>
+        private static List<string> VT_SB_JKDNBZZJL(string PK_IDL)
+        {
+           
+            List<string> list_sql = new List<string>();
+            string strValue = "";
+            string strTypeCode = "";
+            string strSQL = "select * from MeterZzData  where  	intMyId=" + PK_IDL + "";
+            string strOracleSQL_Name = "";
+            string strOracleSQL_Value = "";
+            string strOracleSQL = "insert into VT_SB_JKDNBZZJL (";
+            OleDbConnection AccessConntion = new OleDbConnection(AccessLink);
+            try
+            {
+                AccessConntion.Open();
+                OleDbCommand ccmd = new OleDbCommand(strSQL, AccessConntion);
+                OleDbDataReader red = ccmd.ExecuteReader();
+                while (red.Read() == true)
+                {
+
+
+                    strOracleSQL_Name = strOracleSQL_Name + "GZDBH,";   //工作单编号
+                    strOracleSQL_Value = strOracleSQL_Value + "'" + str_GZDBH;
+                    strOracleSQL_Name = strOracleSQL_Name + "ZCBH,";   //资产编号
+                    strOracleSQL_Value = strOracleSQL_Value + "','" + MeterZCBH;
+
+                    strOracleSQL_Name = strOracleSQL_Name + "SSLXDM,";   //示数类型代码
+                    strValue = red["chrJdfx"].ToString().Trim();
+                    strTypeCode = strValue;    //01701正向有功 /01702反向有功 /01703正向无功/01704反向无功
+                    strTypeCode = strTypeCode + red["chrFl"].ToString().Trim(); // 总、峰平谷尖
+                    strValue = Get_SSLXDM(strTypeCode);
+                    strOracleSQL_Value = strOracleSQL_Value + "','" + strValue;
+
+                    strOracleSQL_Name = strOracleSQL_Name + "DQBM,";   //地区编码
+                    strOracleSQL_Value = strOracleSQL_Value + "','" + str_DQBM;
+
+
+                    strOracleSQL_Name = strOracleSQL_Name + "BZQQSS,";  // 
+                    strValue = "0";
+                    strOracleSQL_Value = strOracleSQL_Value + "','" + strValue;
+
+                    strOracleSQL_Name = strOracleSQL_Name + "BZQZSS,";  //
+                    strValue = red["chrZiMa"].ToString().Trim();
+                    strOracleSQL_Value = strOracleSQL_Value + "','" + strValue;
+
+                    strOracleSQL_Name = strOracleSQL_Name + "QSS,";  //
+                    strValue = red["chrQiMa"].ToString().Trim();
+                    strOracleSQL_Value = strOracleSQL_Value + "','" + strValue;
+
+                    strOracleSQL_Name = strOracleSQL_Name + "ZSS,";  //
+                    strValue = red["chrZiMa"].ToString().Trim();
+                    strOracleSQL_Value = strOracleSQL_Value + "','" + strValue;
+
+                    strOracleSQL_Name = strOracleSQL_Name + "ZZWC";  //
+                    strValue = red["chrWc"].ToString().Trim();
+                    strOracleSQL_Value = strOracleSQL_Value + "','" + strValue + "'";
+
+
+                    strOracleSQL = strOracleSQL + strOracleSQL_Name + ")  Values (" + strOracleSQL_Value + ")";
+
+                    list_sql.Add(strOracleSQL);
+                    strOracleSQL_Name = "";
+                    strOracleSQL_Value = "";
+                    strOracleSQL = "insert into VT_SB_JKDNBZZJL (";
+
+                }
+            }
+            catch { }
+            return list_sql;
+        }
+
+
+        /// <summary>
         /// 结论与代号转换
         /// </summary>
         /// <param name="strResult"></param>
@@ -528,11 +1286,335 @@ namespace SoftType_G
 
             return strResults;
         }
-
-        public void UpdateToOracle(object o)
+        /// <summary>
+        /// 功率方向代码
+        /// </summary>
+        /// <param name="strValue"></param>
+        /// <returns></returns>
+        private static string Get_GLFXDM(string strValue)
         {
-            List<string> Lis_Id = (List<string>)o;
-            UpdateToOracle(Lis_Id);
+            string strResults = "0";
+            switch (strValue)
+            {
+                case "0":
+                    strResults = "1";
+                    break;
+                case "1":
+                    strResults = "3";
+                    break;
+                case "2":
+                    strResults = "2";
+                    break;
+                case "3":
+                    strResults = "4";
+                    break;
+            }
+
+            return strResults;
         }
+
+        /// <summary>
+        /// 功率因数代码
+        /// </summary>
+        /// <param name="strValue"></param>
+        /// <returns></returns>
+        private static string Get_GLYSDM(string strValue)
+        {
+            string strResults = "1";
+            switch (strValue)
+            {
+                case "0.5L":
+                case ".5L":
+                    strResults = "1";
+                    break;
+                case "1.0":
+                case "1":
+                    strResults = "2";
+                    break;
+                case "0.8C":
+                case ".8C":
+                    strResults = "3";
+                    break;
+                case "0.5C":
+                case ".5C":
+                    strResults = "4";
+                    break;
+                case "0.25L":
+                case ".25L":
+                    strResults = "5";
+                    break;
+                case "0.25C":
+                case ".25C":
+                    strResults = "6";
+                    break;
+            }
+
+            return strResults;
+        }
+        /// <summary>
+        /// 负载电流
+        /// </summary>
+        /// <param name="strValue"></param>
+        /// <returns></returns>
+        private static string Get_FZDLDM(string strValue)
+        {
+            string strResults = "";
+            switch (strValue.ToUpper())
+            {
+                case "0.05IB":
+                case ".05IB":
+                case ".05":
+                case "0.05":
+                    strResults = "01";
+                    break;
+                case "0.1IB":
+                case ".1IB":
+                case "0.1":
+                case ".1":
+                    strResults = "02";
+                    break;
+                case "0.2IB":
+                case ".2IB":
+                case ".2":
+                case "0.2":
+                    strResults = "03";
+                    break;
+                case "0.5IB":
+                case ".5IB":
+                case ".5":
+                case "0.5":
+                    strResults = "04";
+                    break;
+                case "1.0IB":
+                case "1IB":
+                case "1":
+                    strResults = "05";
+                    break;
+                case "IMAX":
+                case "10":
+                    strResults = "06";
+                    break;
+                case "0.5IMAX":
+                    strResults = "07";
+                    break;
+                case "4IB":
+                case "4":
+                    strResults = "08";
+                    break;
+                case "3IB":
+                case "3":
+                    strResults = "09";
+                    break;
+                case "2IB":
+                case "2":
+                    strResults = "10";
+                    break;
+                case "0.02IB":
+                case ".02IB":
+                case ".02":
+                case "0.02":
+                    strResults = "11";
+                    break;
+                case "0.01IB":
+                case ".01IB":
+                case "0.01":
+                case ".01":
+                    strResults = "12";
+                    break;
+                case "0.03IB":
+                case ".03IB":
+                case "0.03":
+                case ".03":
+                    strResults = "15";
+                    break;
+            }
+
+            return strResults;
+        }
+        /// <summary>
+        /// 相别代码
+        /// </summary>
+        /// <param name="strValue"></param>
+        /// <returns></returns>
+        private static string Get_XBDM(string strValue)
+        {
+            string strResults = "01";
+            switch (strValue)
+            {
+                case "5":
+                    strResults = "01";
+                    break;
+                case "0":
+                    strResults = "02";
+                    break;
+                case "1":
+                    strResults = "02";
+                    break;
+            }
+
+            return strResults;
+        }
+
+        /// <summary>
+        /// 负载类型代码
+        /// </summary>
+        /// <param name="strValue"></param>
+        /// <returns></returns>
+        private static string Get_FZLXDM(string strValue)
+        {
+            string strResults = "1";
+            switch (strValue)
+            {
+                case "0":
+                    strResults = "1";
+                    break;
+                case "1":
+                    strResults = "2";
+                    break;
+                case "2":
+                    strResults = "3";
+                    break;
+                case "3":
+                    strResults = "4";
+                    break;
+            }
+
+            return strResults;
+        }
+
+        /// <summary>
+        /// 示数类型代码
+        /// </summary>
+        /// <param name="strValue"></param>
+        /// <returns></returns>
+        private static string Get_SSLXDM(string strValue)
+        {
+            string strResults = "121";
+            switch (strValue.Trim())
+            {
+                case "017010"://正向有功 总
+                case "1总"://正向有功 总
+                case "10"://正向有功 总
+                case "正向有功总":
+                    strResults = "121";
+                    break;
+                case "017011"://正向有功 峰
+                case "1峰":
+                case "11":
+                case "正向有功峰":
+                    strResults = "123";
+                    break;
+                case "017012"://正向有功 平
+                case "1平":
+                case "12":
+                case "正向有功平":
+                    strResults = "124";
+                    break;
+                case "017013"://正向有功 谷
+                case "1谷":
+                case "13":
+                case "正向有功谷":
+                    strResults = "125";
+                    break;
+                case "017014"://正向有功 尖
+                case "1尖":
+                case "14":
+                case "正向有功尖":
+                    strResults = "122";
+                    break;
+                case "017020"://反向有功 总
+                case "2总":
+                case "20":
+                case "反向有功总":
+                    strResults = "221";
+                    break;
+                case "017021"://         峰
+                case "2峰":
+                case "22":
+                case "反向有功峰":
+                    strResults = "223";
+                    break;
+                case "017022"://         平
+                case "2平":
+                case "23":
+                case "反向有功平":
+                    strResults = "224";
+                    break;
+                case "017023"://         谷
+                case "2谷":
+                case "反向有功谷":
+                    strResults = "225";
+                    break;
+                case "017024"://         尖
+                case "2尖":
+                case "21":
+                case "反向有功尖":
+                    strResults = "222";
+                    break;
+                case "017030"://正向无功 总
+                case "3总":
+                case "30":
+                case "正向无功总":
+                    strResults = "131";
+                    break;
+                case "017031"://         峰
+                case "3峰":
+                case "31":
+                case "正向无功峰":
+                    strResults = "133";
+                    break;
+                case "017032"://         平
+                case "3平":
+                case "32":
+                case "正向无功平":
+                    strResults = "135";
+                    break;
+                case "017033"://         谷
+                case "3谷":
+                case "33":
+                case "正向无功谷":
+                    strResults = "134";
+                    break;
+                case "017034"://         尖
+                case "3尖":
+                case "34":
+                case "正向无功尖":
+                    strResults = "132";
+                    break;
+                case "017040"://反向无功 总
+                case "4总":
+                case "40":
+                case "反向无功总":
+                    strResults = "231";
+                    break;
+                case "017041"://         峰
+                case "4峰":
+                case "41":
+                case "反向无功峰":
+                    strResults = "236";
+                    break;
+                case "017042"://         平
+                case "4平":
+                case "42":
+                case "反向无功平":
+                    strResults = "238";
+                    break;
+                case "017043"://         谷
+                case "4谷":
+                case "43":
+                case "反向无功谷":
+                    strResults = "237";
+                    break;
+                case "017044"://         尖
+                case "4尖":
+                case "反向无功尖":
+                    strResults = "232";
+                    break;
+            }
+
+            return strResults;
+        }
+   
+        
     }
 }

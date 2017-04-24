@@ -109,7 +109,7 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
-        <ListBox Grid.Column="1" Grid.Row="3">
+        <ListBox Name="listBox_UpInfo" Grid.Column="1" Grid.Row="3">
             
         </ListBox>
 
