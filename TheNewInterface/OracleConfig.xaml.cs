@@ -92,6 +92,12 @@ namespace TheNewInterface
 
 
             }
+            #region Make Oracle Link
+             string StrOracleCoon = "Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST={0})(PORT={1})))(CONNECT_DATA=(SERVICE_NAME= {2})));User Id={3}; Password={4}";
+             StrOracleCoon = string.Format(StrOracleCoon, txt_IPADDRESS.ToString().Trim(), txt_PORT.ToString().Trim(), txt_ServerName.ToString().Trim(), txt_USERNAME.ToString().Trim(), txt_PASSWORD.ToString().Trim());
+             OperateData.FunctionXml.UpdateElement(strSection, "Name", "OracleLink", "Value", StrOracleCoon, BaseConfigPath);
+
+            #endregion
             this.Close();
         }
     }

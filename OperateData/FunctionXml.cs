@@ -203,6 +203,35 @@ namespace OperateData
         }
         #endregion
 
+        #region lee 
+        public static List<string> GetAllNodeData(string NodePath, string Tag, string BackKey, string xmlPath)
+        {
+            XmlDocument xmlDoc = new XmlDocument();
+            List<string> Value_Col = new List<string>();
+            xmlDoc.Load(xmlPath); //加载xml文件
+            XmlNode xn = xmlDoc.SelectSingleNode(NodePath);
+            XmlElement xe = null;
+            try
+            {
+                foreach (XmlNode temp in xn.ChildNodes)
+                {
+                    if (temp.Name == Tag)
+                    {
+                        xe = (XmlElement)temp;
+                        Value_Col.Add(xe.GetAttribute(BackKey));
+                    }
+                }
+            }
+            catch (Exception e)
+            { 
+            
+            }
+         
+
+            return Value_Col;
+        }
+        #endregion
+
         #region 增加
         /// <summary>
         /// 增加节点

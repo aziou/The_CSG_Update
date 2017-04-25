@@ -1,7 +1,8 @@
 ﻿<Window x:Class="TheNewInterface.OracleConfig"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="中间库信息配置" Height="300" Width="500">
+        Title="中间库信息配置" Height="300" Width="500"
+        WindowStartupLocation="CenterScreen">
     <Grid>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Name="DataConfig">
             <Label Content="Oracle配置：" Width="80" Height="30" HorizontalAlignment="Left" />

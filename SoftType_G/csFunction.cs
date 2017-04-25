@@ -58,27 +58,29 @@ namespace SoftType_G
         }
         public static string MeterZCBH="";
         #region 上传数据
-        public string UpadataBaseInfo(string PKid)
+        public string UpadataBaseInfo(string PKid, out List<string>  Col_For_Seal)
         {
             int excuteSuccess = 0;
             string ErrorResult;
+            List<string> SealList = new List<string>();
             List<string> mysql = new List<string>();
             try
             {
 
 
-                mysql = Get_VT_SB_JKDNBJDJL(PKid);
+                mysql = Get_VT_SB_JKDNBJDJL(PKid,out SealList);
 
 
                 excuteSuccess = OperateData.PublicFunction.ExcuteToOracle(mysql, out ErrorResult);
 
                 if (excuteSuccess == 0)
                 {
-
+                    Col_For_Seal = SealList;
                     return MeterZCBH + "基本信息上传到中间库成功！";
                 }
                 else
                 {
+                    Col_For_Seal = SealList;
                     return MeterZCBH + "基本信息上传到中间库失败！" + ErrorResult;
                 }
 
@@ -86,6 +88,7 @@ namespace SoftType_G
             }
             catch (Exception e)
             {
+                Col_For_Seal = SealList;
                 return MeterZCBH + "基本信息上传到中间库失败！" + e.ToString();
             }
 
@@ -308,11 +311,12 @@ namespace SoftType_G
         /// 电能表检定记录
         /// </summary>
         /// <returns></returns>
-        private static List<string> Get_VT_SB_JKDNBJDJL(string str_PkID)
+        private static List<string> Get_VT_SB_JKDNBJDJL(string str_PkID,out List<string> Col_Seal)
         {
            
             List<string> lis_Sql = new List<string>();
-         
+            List<string> lis_Seal = new List<string>();
+       
             string strSQL = "SELECT * FROM meterinfo where intMyId=" + str_PkID + "";
             OleDbConnection AccessConntion = new OleDbConnection(AccessLink);
             AccessConntion.Open();
@@ -594,7 +598,7 @@ namespace SoftType_G
 
                         strOracleSQL_Name = strOracleSQL_Name + "FYZCBH,";
                         strOracleSQL_Value = strOracleSQL_Value + "','" + OldRead[strCode].ToString().Trim();
-
+                        lis_Seal.Add(OldRead[strCode].ToString().Trim());
                         strOracleSQL_Name = strOracleSQL_Name + "JFWZDM,";//加封位置代码-------
                         strValue = ColSeal[iCirc - 1];//此处修改为读取配置信息里面的加封位置
                         strOracleSQL_Value = strOracleSQL_Value + "','" + strValue;
@@ -625,6 +629,7 @@ namespace SoftType_G
                 AccessConntion.Close();
                 OldRead.Close();
             }
+            Col_Seal = lis_Seal;
             return lis_Sql;
 
         }

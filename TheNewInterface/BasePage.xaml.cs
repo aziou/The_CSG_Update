@@ -50,6 +50,9 @@ namespace TheNewInterface
             cmb_Seal03.Items.Add("右耳封");
             cmb_Seal03.Items.Add("编程小门");
             //
+            //人员加载
+            LoadUser();
+
             #endregion
             string strSection = "NewUser/CloumMIS/Item";
             txt_DataPath.Text = OperateData.FunctionXml.ReadElement(strSection, "Name", "txt_DataPath", "Value", "", BaseConfigPath);
@@ -59,6 +62,7 @@ namespace TheNewInterface
             cmb_SoftType.Text = OperateData.FunctionXml.ReadElement(strSection, "Name", "cmb_SoftType", "Value", "", BaseConfigPath);
             cmb_Company.Text = OperateData.FunctionXml.ReadElement(strSection, "Name", "cmb_Company", "Value", "", BaseConfigPath);
             cmb_Hyy.Text = OperateData.FunctionXml.ReadElement(strSection, "Name", "cmb_Hyy", "Value", "", BaseConfigPath);
+            cmb_Jyy.Text = OperateData.FunctionXml.ReadElement(strSection, "Name", "cmb_Jyy", "Value", "", BaseConfigPath);
             cmb_Seal03.Text = OperateData.FunctionXml.ReadElement(strSection, "Name", "cmb_Seal03", "Value", "", BaseConfigPath);
             cmb_Seal02.Text = OperateData.FunctionXml.ReadElement(strSection, "Name", "cmb_Seal02", "Value", "", BaseConfigPath);
             cmb_Seal01.Text = OperateData.FunctionXml.ReadElement(strSection, "Name", "cmb_Seal01", "Value", "", BaseConfigPath);
@@ -154,6 +158,44 @@ namespace TheNewInterface
             this.Close();
         }
 
+        private void btn_AddMember_Click(object sender, RoutedEventArgs e)
+        {
+            AddUser adduser = new AddUser();
+            adduser.ShowDialog();
+        }
+        private void LoadUser()
+        {
+            List<string> UserList = new List<string>();
+            UserList = OperateData.FunctionXml.GetAllNodeData("NewUser/User", "Item", "UserName", BaseConfigPath);
+
+            AddListToCombox(cmb_Hyy, UserList);
+            AddListToCombox(cmb_Jyy, UserList);
+        }
+        private void AddListToCombox(ComboBox cmb, List<string> addList)
+        {
+            cmb.Items.Clear();
+            foreach (string temp in addList)
+            {
+                cmb.Items.Add(temp);
+            }
+        }
+        private void CmbChangeValue(ComboBox cmb,TextBox Value_Txt)
+        {
+           
+            Value_Txt.Text = OperateData.FunctionXml.ReadElement("NewUser/User/Item", "UserName", cmb.SelectedValue.ToString(), "UserNumber", "", BaseConfigPath);
+        }
+
+        private void cmb_Jyy_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            CmbChangeValue(cmb_Jyy, txt_Jyy);
+        }
+
+       
+
+        private void cmb_Hyy_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            CmbChangeValue(cmb_Hyy, txt_Hyy);
+        }
   
     }
 }

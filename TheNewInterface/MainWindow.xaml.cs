@@ -57,10 +57,12 @@ namespace TheNewInterface
                     UpDateMeterId.Add(ViewModel.AllMeterInfo.CreateInstance().MeterBaseInfo[i].PK_LNG_METER_ID);
                 }
             }
+            this.UpdateProgress.Maximum = UpDateMeterId.Count;
+            listBox_UpInfo.Items.Clear();
             UpDateInfomation upinfo = new UpDateInfomation();
             upinfo.Lis_PkId = UpDateMeterId;
             SoftType_G.csFunction s_function = new SoftType_G.csFunction();
-            Thread UpdateThread = new Thread(new ParameterizedThreadStart(UpdateToOracle));
+            UpdateThread = new Thread(new ParameterizedThreadStart(UpdateToOracle));
             UpdateThread.Start(upinfo);
         }
         #region update
@@ -73,50 +75,75 @@ namespace TheNewInterface
         {
            
             double i = 0;
-            int sleepTime = 0; ;
+            int sleepTime = 150; ;
             double t;
-            if (countItem >= 0 && countItem <= 10)
-            {
-                sleepTime = 500;
-            }
-            else if (countItem > 10 && countItem < 20)
-            {
-                sleepTime = 800;
-            }
-            else if (countItem > 20 && countItem < 35)
-            {
-                sleepTime = 3000;
-            }
-            else if (countItem > 40 && countItem < 50)
-            {
-                sleepTime = 1200;
-            }
-            else if (countItem > 50 && countItem <= 60)
-            {
-                sleepTime = 1400;
-            }
-            else
-            {
-                sleepTime = 100;
-            }
 
+            List<string> MeterUp_info = new List<string>();
+            List<string> Seal_info = new List<string>();
+            SoftType_G.csFunction cs_G_Function = new SoftType_G.csFunction();
             foreach (MeterBaseInfoFactor temp in ViewModel.AllMeterInfo.CreateInstance().MeterBaseInfo)
             {
-
                 if (temp.BolIfup == true)
                 {
                     t = i + 1;
                     i = t < countItem ? t : countItem;
+                    MeterUp_info.Clear();
 
-                    listBox_UpInfo.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<string, double>(UpDateMeter), temp.PK_LNG_METER_ID, i);
-                    Thread.Sleep(sleepTime);
+                    MeterUp_info.Add("第" + temp.LNG_BENCH_POINT_NO.ToString() + "表位" + cs_G_Function.UpadataBaseInfo(temp.PK_LNG_METER_ID, out Seal_info));
+
+                    #region Add SEAL
+                    foreach (string temp_id in Seal_info)
+                    {
+                        MeterUp_info.Add("添加铅封："+temp_id+"成功");
+                    }
+                    #endregion
+
+                    MeterUp_info.Add(cs_G_Function.UpdataErrorInfo(temp.PK_LNG_METER_ID));
+
+                    MeterUp_info.Add(cs_G_Function.UpdataJKRJSWCInfo(temp.PK_LNG_METER_ID));
+
+                    MeterUp_info.Add(cs_G_Function.UpdataJKXLWCJLInfo(temp.PK_LNG_METER_ID));
+
+                    MeterUp_info.Add(cs_G_Function.UpdataSDTQWCJLInfo(temp.PK_LNG_METER_ID));
+
+                    MeterUp_info.Add(cs_G_Function.UpdataDNBSSJLInfo(temp.PK_LNG_METER_ID));
+
+                    MeterUp_info.Add(cs_G_Function.UpdataDNBZZJLInfo(temp.PK_LNG_METER_ID));
+
+                    foreach (string temp_id in MeterUp_info)
+                    {
+                        listBox_UpInfo.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<string, double>(UpDateMeter), temp_id, i);
+                        Thread.Sleep(sleepTime);
+                    }
+                    
                 }
+                
+                
             }
+          
             MessageBox.Show("成功上传 :" + countItem + "个表");
-            UpdateThread.Abort();
+            try
+            {
+                UpdateThread.Abort();
+            }
+            catch (Exception e)
+            { }
+            finally
+            {
+
+                this.listBox_UpInfo.Dispatcher.Invoke(new Action(() => {
+
+                    this.listBox_UpInfo.UpdateLayout();
+
+                    this.listBox_UpInfo.ScrollIntoView(listBox_UpInfo.Items[listBox_UpInfo.Items.Count - 1]);
+                }));
+
+            }
+           
+
         }
 
-        private void UpDateMeter(string Meter_ID, double progressCount)
+        private void UpDateMeter(string Meter_update_info, double progressCount)
         {
 
            
@@ -128,26 +155,32 @@ namespace TheNewInterface
 
 
             //zcbhList.Add(temp.AVR_ASSET_NO);
-            listBox_UpInfo.Items.Add(cs_G_Function.UpadataBaseInfo(Meter_ID));
+            //listBox_UpInfo.Items.Add(cs_G_Function.UpadataBaseInfo(Meter_ID));
 
-            listBox_UpInfo.Items.Add(cs_G_Function.UpdataErrorInfo(Meter_ID));
+            //listBox_UpInfo.Items.Add(cs_G_Function.UpdataErrorInfo(Meter_ID));
 
-            listBox_UpInfo.Items.Add(cs_G_Function.UpdataJKRJSWCInfo(Meter_ID));
+            //listBox_UpInfo.Items.Add(cs_G_Function.UpdataJKRJSWCInfo(Meter_ID));
 
-            listBox_UpInfo.Items.Add(cs_G_Function.UpdataJKXLWCJLInfo(Meter_ID));
+            //listBox_UpInfo.Items.Add(cs_G_Function.UpdataJKXLWCJLInfo(Meter_ID));
 
-            listBox_UpInfo.Items.Add(cs_G_Function.UpdataSDTQWCJLInfo(Meter_ID));
+            //listBox_UpInfo.Items.Add(cs_G_Function.UpdataSDTQWCJLInfo(Meter_ID));
 
-            listBox_UpInfo.Items.Add(cs_G_Function.UpdataDNBSSJLInfo(Meter_ID));
+            //listBox_UpInfo.Items.Add(cs_G_Function.UpdataDNBSSJLInfo(Meter_ID));
 
-            listBox_UpInfo.Items.Add(cs_G_Function.UpdataDNBZZJLInfo(Meter_ID));
+            //listBox_UpInfo.Items.Add(cs_G_Function.UpdataDNBZZJLInfo(Meter_ID));
 
+           
+           
+                listBox_UpInfo.Items.Add(Meter_update_info);
+         
 
-            this.UpdateProgress.Value = progressCount;
             listBox_UpInfo.UpdateLayout();
             listBox_UpInfo.ScrollIntoView(listBox_UpInfo.Items[listBox_UpInfo.Items.Count - 1]);
+                  
+            this.UpdateProgress.Value = progressCount;
+           // listBox_UpInfo.UpdateLayout();
             watch.Stop();
-            listBox_UpInfo.Items.Add("使用时间为：" + watch.ElapsedMilliseconds.ToString() + "毫秒");
+           // listBox_UpInfo.Items.Add("使用时间为：" + watch.ElapsedMilliseconds.ToString() + "毫秒");
 
 
 
