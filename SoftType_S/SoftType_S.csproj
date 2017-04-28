@@ -48,6 +48,10 @@
       <Project>{29CAA2A2-B45F-4F10-B333-D316EDCC1501}</Project>
       <Name>DataCore</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Mis_Interface_Driver\Mis_Interface_Driver.csproj">
+      <Project>{53F67282-5E11-4670-BAFC-0EBC0AEB0F4A}</Project>
+      <Name>Mis_Interface_Driver</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OperateData\OperateData.csproj">
       <Project>{BD95F477-36D8-4B0A-A7FF-469EE9489426}</Project>
       <Name>OperateData</Name>

@@ -5,7 +5,7 @@ using System.Text;
 using Driver_Interface;
 namespace Mis_Interface_Driver
 {
-    public abstract class MisDriver:BaseDriver
+    public abstract class MisDriver
     {
         public enum SoftType_Code : uint
         {
@@ -24,5 +24,17 @@ namespace Mis_Interface_Driver
             OutPutMisInfoToReport = 4,
 
         }
+
+        public abstract string UpadataBaseInfo(string PK_Id, out List<string> SealCol);
+        public abstract string UpdataErrorInfo(string PK_Id);
+        public abstract string UpdataJKRJSWCInfo(string PK_Id);
+        public abstract string UpdataJKXLWCJLInfo(string PK_Id, out List<string> SealCol);
+        public abstract string UpdataDNBSSJLInfo(string PK_Id);
+        public abstract string UpdataDNBZZJLInfo(string PK_Id);
+        public abstract string UpdataSDTQWCJLInfo(string PK_Id);
+
+
+       
+
     }
 }

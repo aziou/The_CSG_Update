@@ -46,12 +46,10 @@ D:\AziouStudio\The_GSC_Update\TheNewInterface\bin\Debug\Mis_Interface_Driver.dll
 D:\AziouStudio\The_GSC_Update\TheNewInterface\bin\Debug\OperateData.dll
 D:\AziouStudio\The_GSC_Update\TheNewInterface\bin\Debug\SoftType_G.dll
 D:\AziouStudio\The_GSC_Update\TheNewInterface\bin\Debug\SoftType_S.dll
-D:\AziouStudio\The_GSC_Update\TheNewInterface\bin\Debug\Driver_Interface.dll
 D:\AziouStudio\The_GSC_Update\TheNewInterface\bin\Debug\DataCore.pdb
 D:\AziouStudio\The_GSC_Update\TheNewInterface\bin\Debug\Mis_Interface_Driver.pdb
 D:\AziouStudio\The_GSC_Update\TheNewInterface\bin\Debug\OperateData.pdb
 D:\AziouStudio\The_GSC_Update\TheNewInterface\bin\Debug\SoftType_G.pdb
 D:\AziouStudio\The_GSC_Update\TheNewInterface\bin\Debug\SoftType_S.pdb
-D:\AziouStudio\The_GSC_Update\TheNewInterface\bin\Debug\Driver_Interface.pdb
 D:\AziouStudio\The_GSC_Update\TheNewInterface\obj\x86\Debug\AddUser.baml
 D:\AziouStudio\The_GSC_Update\TheNewInterface\obj\x86\Debug\AddUser.g.cs

@@ -1,26 +1,28 @@
 <?xml version="1.0" encoding="gb2312" standalone="yes"?>
 <NewUser>
   <CloumMIS>
-    <Item Name="txt_DataPath" Value="D:\CL3000G\database\ClouMeterData.mdb" />
+    <Item Name="txt_DataPath" Value="D:\Company\CLOU\湛江\20170426\DataBase\DataBase\ClouMeterData.mdb" />
     <Item Name="txt_equipment" Value="123456789" />
     <Item Name="txt_Jyy" Value="cbazzxc" />
     <Item Name="txt_Hyy" Value="shkj" />
-    <Item Name="cmb_SoftType" Value="CL3000G" />
+    <Item Name="cmb_SoftType" Value="CL3000S" />
     <Item Name="cmb_Company" Value="" />
     <Item Name="cmb_Jyy" Value="lees" />
     <Item Name="cmb_Hyy" Value="shero" />
     <Item Name="cmb_Seal03" Value="左耳封" />
     <Item Name="cmb_Seal02" Value="编程小门" />
     <Item Name="cmb_Seal01" Value="右耳封" />
-    <Item Name="AccessLink" Value="Provider=Microsoft.Jet.OleDb.4.0;Data Source=D:\CL3000G\database\ClouMeterData.mdb;Persist Security Info=False" />
+    <Item Name="AccessLink" Value="Provider=Microsoft.Jet.OleDb.4.0;Data Source=D:\Company\CLOU\湛江\20170426\DataBase\DataBase\ClouMeterData.mdb;Persist Security Info=False" />
     <Item Name="TheWorkNum" Value="07522300987" />
     <Item Name="" Value="" />
+    <Item Name="OracleLink" Value="" />
   </CloumMIS>
   <User>
     <Item UserName="lees" UserNumber="cbazzxc" />
-    <Item UserName="shero" UserNumber="shkj" />
-    <Item UserName="shero123" UserNumber="shkj" />
     <Item UserName="king" UserNumber="chenjiawei" />
     <Item UserName="Queen" UserNumber="kingasd" />
   </User>
+  <DQBM>
+    <Item Company="东莞" CompanyNum="123456" />
+  </DQBM>
 </NewUser>

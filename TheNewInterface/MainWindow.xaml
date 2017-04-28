@@ -44,21 +44,21 @@
 
         <DataGrid Grid.Column="1" Grid.Row="2" ItemsSource="{Binding MeterBaseInfo}" Name="dg_Info" AutoGenerateColumns="False"  CanUserAddRows="False">
             <DataGrid.Columns>
-                <DataGridTemplateColumn Header="选中" Width="*" >
+                <DataGridTemplateColumn Header="选中" Width="0.5*" >
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate >
                             <CheckBox IsChecked="{Binding BolIfup,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></CheckBox>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="表位号" Width="*" >
+                <DataGridTemplateColumn Header="表位号" Width="0.5*" >
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Label Content="{Binding LNG_BENCH_POINT_NO}" ></Label>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="ID" Width="*" >
+                <DataGridTemplateColumn Header="ID" Width="2*" >
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Label Content="{Binding PK_LNG_METER_ID}" ></Label>
@@ -72,14 +72,14 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="电压" Width="*" >
+                <DataGridTemplateColumn Header="电压" Width="0.8*" >
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Label    Content="{Binding AVR_UB}"></Label>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="电流" Width="*" >
+                <DataGridTemplateColumn Header="电流" Width="0.8*" >
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Label   Content="{Binding AVR_IB}"></Label>
@@ -119,7 +119,8 @@
             <Button Name="btn_update" Width="80" Height="25" Margin="0,0,0,10" Content="上传数据" Click="btn_update_Click"/>
             <Button Name="btn_download" Width="80" Height="25" Margin="0,0,0,10" Content="下载数据" Click="btn_download_Click"/>
             <Button Name="btn_deldteMis" Width="80" Height="25" Margin="0,0,0,10" Content="删除中间库" Click="btn_deldteMis_Click"/>
-            <Button Name="btn_deldteMisAll" Width="80" Height="25" Margin="0,0,0,10"  Content="删除工作单" Click="btn_deldteMis_Click"/> 
+            <Button Name="btn_deldteMisAll" Width="80" Height="25" Margin="0,0,0,10"  Content="删除工作单" Click="btn_deldteMis_Click"/>
+            <Button Name="btn_testFunction" Width="80" Height="25" Margin="0,0,0,10"  Content="方法测试"  Click="btn_testFunction_Click"/> 
         </StackPanel>
         <!-- 右边 button-->
         <ProgressBar Grid.Column="1" Grid.Row="4" Margin="0 2" Height="8"  Value="{Binding ProgressValues,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Name="UpdateProgress" />

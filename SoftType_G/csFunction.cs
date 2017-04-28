@@ -9,7 +9,7 @@ using System.Data.OleDb;
 
 namespace SoftType_G
 {
-    public class csFunction
+    public class csFunction:Mis_Interface_Driver.MisDriver
     {
         public string Sql_word_1 = "Provider=Microsoft.Jet.OleDb.4.0;Data Source=";
         public string Sql_word_2 = ";Persist Security Info=False";
@@ -58,7 +58,7 @@ namespace SoftType_G
         }
         public static string MeterZCBH="";
         #region 上传数据
-        public string UpadataBaseInfo(string PKid, out List<string>  Col_For_Seal)
+        public override string UpadataBaseInfo(string PKid, out List<string>  Col_For_Seal)
         {
             int excuteSuccess = 0;
             string ErrorResult;
@@ -95,7 +95,7 @@ namespace SoftType_G
 
         }
 
-        public string UpdataErrorInfo(string OnlyIdNum)
+        public override string UpdataErrorInfo(string OnlyIdNum)
         {
 
             int excuteSuccess;
@@ -130,7 +130,7 @@ namespace SoftType_G
 
         }
 
-        public string UpdataJKRJSWCInfo(string OnlyIdNum)
+        public override string UpdataJKRJSWCInfo(string OnlyIdNum)
         {
 
             int excuteSuccess;
@@ -165,26 +165,31 @@ namespace SoftType_G
 
         }
 
-        public string UpdataJKXLWCJLInfo(string OnlyIdNum)
+        public override string UpdataJKXLWCJLInfo(string OnlyIdNum, out List<string> Col_For_Demand)
         {
 
             int excuteSuccess;
             string ErrorReason;
             List<string> mysql = new List<string>();
+            List<string> list_Demand = new List<string>();
             try
             {
 
-                mysql = Get_VT_SB_JKXLWCJL(OnlyIdNum);
+                mysql = Get_VT_SB_JKXLWCJL(OnlyIdNum, out list_Demand);
 
 
 
                 excuteSuccess = OperateData.PublicFunction.ExcuteToOracle(mysql, out ErrorReason);
                 if (excuteSuccess == 0)
                 {
+                    MakeUp_Result(ref list_Demand, true);
+                    Col_For_Demand = list_Demand;
                     return "电表需量数据上传到中间库成功！";
                 }
                 else
                 {
+                    MakeUp_Result(ref list_Demand, false);
+                    Col_For_Demand = list_Demand;
                     return "电表需量数据上传到中间库失败！" + ErrorReason;
                 }
 
@@ -194,13 +199,14 @@ namespace SoftType_G
             }
             catch (Exception e)
             {
+                Col_For_Demand = null;
                 return "电表需量数据上传到中间库失败！" + e.ToString();
             }
 
 
         }
 
-        public string UpdataSDTQWCJLInfo(string OnlyIdNum)
+        public override string UpdataSDTQWCJLInfo(string OnlyIdNum)
         {
 
             int excuteSuccess;
@@ -235,7 +241,7 @@ namespace SoftType_G
 
         }
 
-        public string UpdataDNBSSJLInfo(string OnlyIdNum)
+        public override string UpdataDNBSSJLInfo(string OnlyIdNum)
         {
 
             int excuteSuccess;
@@ -251,7 +257,15 @@ namespace SoftType_G
                 excuteSuccess = OperateData.PublicFunction.ExcuteToOracle(mysql, out ErrorReason);
                 if (excuteSuccess == 0)
                 {
-                    return "电表底度上传到中间库成功！";
+                    if (mysql.Count == 0)
+                    {
+                        return "没有电表底度数据！";
+                    }
+                    else
+                    {
+                        return "电表底度上传到中间库成功！";
+                    }
+                    
                 }
                 else
                 {
@@ -270,7 +284,7 @@ namespace SoftType_G
 
         }
 
-        public string UpdataDNBZZJLInfo(string OnlyIdNum)
+        public override string UpdataDNBZZJLInfo(string OnlyIdNum)
         {
 
             int excuteSuccess;
@@ -305,7 +319,7 @@ namespace SoftType_G
 
         }
 
-#endregion
+        #endregion
        
         /// <summary>
         /// 电能表检定记录
@@ -571,9 +585,9 @@ namespace SoftType_G
                 string strSealValuePath = "NewUser/CloumMIS/Item";
                 string str_Seal01 = "", str_Seal02 = "", str_Seal03 = "";
                 List<string> ColSeal = new List<string>();
-                str_Seal01 = OperateData.FunctionXml.ReadElement("NewUser/CloumMIS/Item", "Name", "cmb_Seal01", "Value", "", System.AppDomain.CurrentDomain.BaseDirectory + @"\config\NewBaseInfo.xml");
-                str_Seal02 = OperateData.FunctionXml.ReadElement("NewUser/CloumMIS/Item", "Name", "cmb_Seal02", "Value", "", System.AppDomain.CurrentDomain.BaseDirectory + @"\config\NewBaseInfo.xml");
-                str_Seal03 = OperateData.FunctionXml.ReadElement("NewUser/CloumMIS/Item", "Name", "cmb_Seal03", "Value", "", System.AppDomain.CurrentDomain.BaseDirectory + @"\config\NewBaseInfo.xml");
+                str_Seal01 = OperateData.FunctionXml.ReadElement(strSealValuePath, "Name", "cmb_Seal01", "Value", "", System.AppDomain.CurrentDomain.BaseDirectory + @"\config\NewBaseInfo.xml");
+                str_Seal02 = OperateData.FunctionXml.ReadElement(strSealValuePath, "Name", "cmb_Seal02", "Value", "", System.AppDomain.CurrentDomain.BaseDirectory + @"\config\NewBaseInfo.xml");
+                str_Seal03 = OperateData.FunctionXml.ReadElement(strSealValuePath, "Name", "cmb_Seal03", "Value", "", System.AppDomain.CurrentDomain.BaseDirectory + @"\config\NewBaseInfo.xml");
                 str_Seal01 = SwitchSealNum(str_Seal01);
                 str_Seal02 = SwitchSealNum(str_Seal02);
                 str_Seal03 = SwitchSealNum(str_Seal03);
@@ -794,7 +808,7 @@ namespace SoftType_G
         {
             
             List<string> list_SQL = new List<string>();
-            string strSQL = "";
+            
             string strValue = "";
             string strOracleSQL_Name = "";
             string strOracleSQL_Value = "";
@@ -879,11 +893,12 @@ namespace SoftType_G
         /// 电能表需量记录表
         /// </summary>
         /// <returns></returns>
-        private static List<string> Get_VT_SB_JKXLWCJL(string pk_ID)
+        private static List<string> Get_VT_SB_JKXLWCJL(string pk_ID,out List<string> DemandList)
         {
             
             List<string> list_sql = new List<string>();
-            string strSQL = "";
+            List<string> lis_Demand= new List<string>();
+           
             string strValue = "";
             string strOracleSQL_Name = "";
             string strOracleSQL_Value = "";
@@ -905,9 +920,23 @@ namespace SoftType_G
                         strOracleSQL_Value = strOracleSQL_Value + "'" + str_GZDBH;
                         strOracleSQL_Name = strOracleSQL_Name + "ZCBH,";   //资产编号
                         strOracleSQL_Value = strOracleSQL_Value + "','" + MeterZCBH;
-                        if (iCirc == 16) strValue = "02";   //0.1IB
-                        if (iCirc == 17) strValue = "05";   //IB
-                        if (iCirc == 18) strValue = "06";   //Imax
+                        if (iCirc == 16)
+                        {
+                            strValue = "02";   //0.1IB
+                            lis_Demand.Add("上传最大需量0.1IB");
+                        }
+                        if (iCirc == 17)
+                        {
+                            strValue = "05";   //IB
+                            lis_Demand.Add("上传最大需量1IB");
+
+                        }
+                        if (iCirc == 18)
+                        {
+                            strValue = "06";   //Imax
+                            lis_Demand.Add("上传最大需量Imax");
+
+                        } 
                         strOracleSQL_Name = strOracleSQL_Name + "FZDLDM,";   //负载电流代码
                         strOracleSQL_Value = strOracleSQL_Value + "','" + strValue;
 
@@ -949,7 +978,7 @@ namespace SoftType_G
                 }
             }
             catch { }
-
+            DemandList = lis_Demand;
             return list_sql;
         }
 
@@ -1619,7 +1648,24 @@ namespace SoftType_G
 
             return strResults;
         }
-   
-        
-    }
+
+        private static void MakeUp_Result(ref List<string> Col_Result, bool IsSuccess)
+        {
+            if (IsSuccess)
+            {
+                for (int i = 0; i < Col_Result.Count; i++)
+                {
+                    Col_Result[i] = Col_Result[i] + "成功";
+                }
+            }
+            else
+            {
+                for (int i = 0; i < Col_Result.Count; i++)
+                {
+                    Col_Result[i] = Col_Result[i] + "失败";
+                }
+            }
+        }
+    
+    }   
 }

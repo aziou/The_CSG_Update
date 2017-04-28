@@ -16,9 +16,10 @@
             </WrapPanel>
             <WrapPanel Margin="0,10,0,0">
                 <Label Content="单位名称：" Width="80" Height="25" VerticalContentAlignment="Center"/>
-                <ComboBox Name="cmb_Company" Width="100" Height="25" VerticalContentAlignment="Center" />
-                <TextBox Width="100" Height="25" Margin='5,0,0,0' VerticalContentAlignment="Center"/>
-            </WrapPanel>
+                <ComboBox Name="cmb_Company" Width="100" Height="25" VerticalContentAlignment="Center" SelectionChanged="cmb_Company_SelectionChanged" />
+                <TextBox Name="txt_CompanyNum" Width="100" Height="25" Margin='5,0,5,0' VerticalContentAlignment="Center"/>
+                <Button Content="添加地区" Height="25" Width="80" Name="btn_AddDQBM" VerticalContentAlignment="Center" Click="btn_AddDQBM_Click"/>
+                </WrapPanel>
             <WrapPanel Margin="0,10,0,0">
                 <Label Content="装置编号：" Width="80" Height="25" VerticalContentAlignment="Center"/>
                 <TextBox Name="txt_equipment" Width="250" Height="25" VerticalContentAlignment="Center" />

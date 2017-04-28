@@ -52,7 +52,8 @@ namespace TheNewInterface
             //
             //人员加载
             LoadUser();
-
+            //地区编号
+            LoadCompany();
             #endregion
             string strSection = "NewUser/CloumMIS/Item";
             txt_DataPath.Text = OperateData.FunctionXml.ReadElement(strSection, "Name", "txt_DataPath", "Value", "", BaseConfigPath);
@@ -160,7 +161,7 @@ namespace TheNewInterface
 
         private void btn_AddMember_Click(object sender, RoutedEventArgs e)
         {
-            AddUser adduser = new AddUser();
+            AddUser adduser = new AddUser("AddMember");
             adduser.ShowDialog();
         }
         private void LoadUser()
@@ -170,6 +171,14 @@ namespace TheNewInterface
 
             AddListToCombox(cmb_Hyy, UserList);
             AddListToCombox(cmb_Jyy, UserList);
+        }
+        private void LoadCompany()
+        {
+            List<string> UserList = new List<string>();
+            UserList = OperateData.FunctionXml.GetAllNodeData("NewUser/DQBM", "Item", "Company", BaseConfigPath);
+
+            AddListToCombox(cmb_Company, UserList);
+           
         }
         private void AddListToCombox(ComboBox cmb, List<string> addList)
         {
@@ -184,7 +193,11 @@ namespace TheNewInterface
            
             Value_Txt.Text = OperateData.FunctionXml.ReadElement("NewUser/User/Item", "UserName", cmb.SelectedValue.ToString(), "UserNumber", "", BaseConfigPath);
         }
+        private void CmbChangeValue(ComboBox cmb, TextBox Value_Txt,bool isCompany)
+        {
 
+            Value_Txt.Text = OperateData.FunctionXml.ReadElement("NewUser/DQBM/Item", "Company", cmb.SelectedValue.ToString(), "CompanyNum", "", BaseConfigPath);
+        }
         private void cmb_Jyy_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             CmbChangeValue(cmb_Jyy, txt_Jyy);
@@ -195,6 +208,17 @@ namespace TheNewInterface
         private void cmb_Hyy_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             CmbChangeValue(cmb_Hyy, txt_Hyy);
+        }
+
+        private void btn_AddDQBM_Click(object sender, RoutedEventArgs e)
+        {
+            AddUser adduser = new AddUser("AddArea");
+            adduser.ShowDialog();
+        }
+
+        private void cmb_Company_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            CmbChangeValue(cmb_Company, txt_CompanyNum,true);
         }
   
     }
