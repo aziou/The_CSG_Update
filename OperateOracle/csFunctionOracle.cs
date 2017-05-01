@@ -15,14 +15,14 @@ namespace OperateOracle
     {
         public readonly string OracleLink = OperateData.FunctionXml.ReadElement("NewUser/CloumMIS/Item", "Name", "OracleLink", "Value", "", System.AppDomain.CurrentDomain.BaseDirectory + @"\config\NewBaseInfo.xml");
         public static readonly string AccessLink = OperateData.FunctionXml.ReadElement("NewUser/CloumMIS/Item", "Name", "AccessLink", "Value", "", System.AppDomain.CurrentDomain.BaseDirectory + @"\config\NewBaseInfo.xml");
-        public Dictionary<string, string> BaseInfoColumnName;
-        public Dictionary<string, string> ErrorInfoColumnName;
-        public Dictionary<string, string> RjsInfoColumnName;
-        public Dictionary<string, string> JKXKInfoColumnName;
-        public Dictionary<string, string> JKSDTQInfoColumnName;
-        public Dictionary<string, string> JKSSInfoColumnName;
-        public Dictionary<string, string> JKZZInfoColumnName;
-        public Dictionary<string, string> JKFYInfoColumnName;
+        public Dictionary<string, string> BaseInfoColumnName = new Dictionary<string, string>();
+        public Dictionary<string, string> ErrorInfoColumnName = new Dictionary<string, string>();
+        public Dictionary<string, string> RjsInfoColumnName = new Dictionary<string, string>();
+        public Dictionary<string, string> JKXKInfoColumnName = new Dictionary<string, string>();
+        public Dictionary<string, string> JKSDTQInfoColumnName = new Dictionary<string, string>();
+        public Dictionary<string, string> JKSSInfoColumnName = new Dictionary<string, string>();
+        public Dictionary<string, string> JKZZInfoColumnName = new Dictionary<string, string>();
+        public Dictionary<string, string> JKFYInfoColumnName = new Dictionary<string, string>();
         public int ShowTheConditionTable(string FromName, string ConditionShow, string man, string Keyword, out List<DataTableMember> TempTableInfoList)
         {
             int result = 0;
@@ -205,6 +205,7 @@ namespace OperateOracle
 
         public csFunctionOracle()
         {
+            #region 列头
             #region baseInfoCol
             BaseInfoColumnName.Add("GZDBH", "工作单编号");
             BaseInfoColumnName.Add("ZCBH", "资产编号");
@@ -252,7 +253,7 @@ namespace OperateOracle
             BaseInfoColumnName.Add("XSGNJCJLDM", "显示功能检查结论代码");
             BaseInfoColumnName.Add("YZNRJCJLDM", "预置内容检查结论代码");
             BaseInfoColumnName.Add("AQFHGNJCJLDM", "安全防护功能检查结论代码");
-            BaseInfoColumnName.Add("TDDGNJCJLDM", "通断电功能检查结论代码")            BaseInfoColumnName.Add("TDDGNJCJLDM", "通断电功能检查结论代码");
+            BaseInfoColumnName.Add("TDDGNJCJLDM", "通断电功能检查结论代码");
             BaseInfoColumnName.Add("TXGNJCJLDM", "通信功能检查结论代码");
             BaseInfoColumnName.Add("TXGYYZXJCJLDM", "通信规约一致性检查结论代码");
             BaseInfoColumnName.Add("SJCSXKGRSYJLDM", "数据传输线抗干扰试验结论代码");
@@ -270,36 +271,376 @@ namespace OperateOracle
             BaseInfoColumnName.Add("HYRYBH", "核验员编号");
             BaseInfoColumnName.Add("HYRQ", "核验日期");
             BaseInfoColumnName.Add("DQBM", "地区编码");
-            BaseInfoColumnName.Add("HYRQ", "核验日期");
+          
             BaseInfoColumnName.Add("BZ", "检定情况说明");
             BaseInfoColumnName.Add("BZZZZCBH", "电能计量标准设备资产编号");
-            
+
             #endregion
 
             #region Error
-            ErrorInfoColumnName.Add("GZDBH","工作单编号");
-            ErrorInfoColumnName.Add("ZCBH","资产编号");
-            ErrorInfoColumnName.Add("GLFXDM","功率方向代码");
-            ErrorInfoColumnName.Add("GLYSDM","功率因数代码");
-            ErrorInfoColumnName.Add("FZDLDM","负载电流代码");
-            ErrorInfoColumnName.Add("XBDM","相别代码");
-            ErrorInfoColumnName.Add("FZLXDM","负载类型代码");
-            ErrorInfoColumnName.Add("FYDM","分元代码");
-            ErrorInfoColumnName.Add("WCZ1","误差1");
-            ErrorInfoColumnName.Add("WCZ2","误差2");
-            ErrorInfoColumnName.Add("WCZ3","误差3");
-            ErrorInfoColumnName.Add("WCZ4","误差4");
-            ErrorInfoColumnName.Add("WCZ5","误差5");
-            ErrorInfoColumnName.Add("WCPJZ","误差平均值");
-            ErrorInfoColumnName.Add("WCXYZ","不平衡负载与平衡负载的误差差值");
-            ErrorInfoColumnName.Add("JLDM","结论代码");
-            ErrorInfoColumnName.Add("WCCZ","不平衡负载与平衡负载的误差差值");
-            ErrorInfoColumnName.Add("WCCZXYZ","误差差值修约值");
-            ErrorInfoColumnName.Add("DQBM","地区编码");
+            ErrorInfoColumnName.Add("GZDBH", "工作单编号");
+            ErrorInfoColumnName.Add("ZCBH", "资产编号");
+            ErrorInfoColumnName.Add("GLFXDM", "功率方向代码");
+            ErrorInfoColumnName.Add("GLYSDM", "功率因数代码");
+            ErrorInfoColumnName.Add("FZDLDM", "负载电流代码");
+            ErrorInfoColumnName.Add("XBDM", "相别代码");
+            ErrorInfoColumnName.Add("FZLXDM", "负载类型代码");
+            ErrorInfoColumnName.Add("FYDM", "分元代码");
+            ErrorInfoColumnName.Add("WCZ1", "误差1");
+            ErrorInfoColumnName.Add("WCZ2", "误差2");
+            ErrorInfoColumnName.Add("WCZ3", "误差3");
+            ErrorInfoColumnName.Add("WCZ4", "误差4");
+            ErrorInfoColumnName.Add("WCZ5", "误差5");
+            ErrorInfoColumnName.Add("WCPJZ", "误差平均值");
+            ErrorInfoColumnName.Add("WCXYZ", "不平衡负载与平衡负载的误差差值");
+            ErrorInfoColumnName.Add("JLDM", "结论代码");
+            ErrorInfoColumnName.Add("WCCZ", "不平衡负载与平衡负载的误差差值");
+            ErrorInfoColumnName.Add("WCCZXYZ", "误差差值修约值");
+            ErrorInfoColumnName.Add("DQBM", "地区编码");
 
-        #endregion 
-            
+            #endregion
 
+            #region Rjs
+            RjsInfoColumnName.Add("GZDBH", "工作单编号");
+            RjsInfoColumnName.Add("ZCBH", "资产编号");
+            RjsInfoColumnName.Add("CSZ1", "测试值1");
+            RjsInfoColumnName.Add("CSZ2", "测试值2");
+            RjsInfoColumnName.Add("CSZ3", "测试值3");
+            RjsInfoColumnName.Add("CSZ4", "测试值4");
+            RjsInfoColumnName.Add("CSZ5", "测试值5");
+            RjsInfoColumnName.Add("PJZ", "平均值");
+            RjsInfoColumnName.Add("DQBM", "地区编码");
+
+            #endregion
+
+            #region 需量
+            JKXKInfoColumnName.Add("GZDBH", "工作单编号");
+            JKXKInfoColumnName.Add("ZCBH", "资产编号");
+            JKXKInfoColumnName.Add("FZDLDM", "负载电流代码");
+            JKXKInfoColumnName.Add("BZZDXL", "标准最大需量");
+            JKXKInfoColumnName.Add("SJXL", "实际需量");
+            JKXKInfoColumnName.Add("WCZ", "误差值");
+            JKXKInfoColumnName.Add("JLDM", "结论代码");
+            JKXKInfoColumnName.Add("DQBM", "地区编码");
+            #endregion
+
+            #region 时段投切
+            JKSDTQInfoColumnName.Add("GZDBH", "工作单编号");
+            JKSDTQInfoColumnName.Add("ZCBH", "资产编号");
+            JKSDTQInfoColumnName.Add("SD", "时段");
+            JKSDTQInfoColumnName.Add("BZTQSJ", "标准投切时间");
+            JKSDTQInfoColumnName.Add("SJTQSJ", "实际投切时间");
+            JKSDTQInfoColumnName.Add("TQWC", "投切误差");
+            JKSDTQInfoColumnName.Add("DQBM", "地区编码");
+            #endregion
+
+            #region 示数
+            JKSSInfoColumnName.Add("GZDBH", "工作单编号");
+            JKSSInfoColumnName.Add("ZCBH", "资产编号");
+            JKSSInfoColumnName.Add("SSLXDM", "示数类型代码");
+            JKSSInfoColumnName.Add("BSS", "表示数");
+            JKSSInfoColumnName.Add("CBRQ", "抄表日期");
+            JKSSInfoColumnName.Add("CBSJ", "抄表时间");
+            JKSSInfoColumnName.Add("DQBM", "地区编码");
+            #endregion
+
+            #region 走字
+            JKZZInfoColumnName.Add("GZDBH", "工作单编号");
+            JKZZInfoColumnName.Add("ZCBH", "资产编号");
+            JKZZInfoColumnName.Add("SSLXDM", "示数类型代码");
+            JKZZInfoColumnName.Add("BZQQSS", "标准器起示数");
+            JKZZInfoColumnName.Add("BZQZSS", "标准器止示数");
+            JKZZInfoColumnName.Add("QSS", "起示数");
+            JKZZInfoColumnName.Add("ZSS", "止示数");
+            JKZZInfoColumnName.Add("ZZWC", "走字误差");
+            JKZZInfoColumnName.Add("DQBM", "地区编码");
+            #endregion
+
+            #region 封印
+            JKFYInfoColumnName.Add("GZDBH", "工作单编号");
+            JKFYInfoColumnName.Add("ZCBH", "资产编号");
+            JKFYInfoColumnName.Add("BGBZ", "变更标识");
+            JKFYInfoColumnName.Add("FYZCBH", "封印资产编号");
+            JKFYInfoColumnName.Add("JFWZDM", "加封位置代码");
+            JKFYInfoColumnName.Add("JFSJ", "加封时间");
+            JKFYInfoColumnName.Add("DQBM", "地区编码");
+            #endregion
+            #endregion
         }
+        #region 转译代码
+        private string TransGLFX(string origrial)
+        {
+            switch (origrial)
+            {
+                case "1":
+                    origrial = "正向有功";
+                    break;
+                case "2":
+                    origrial = "正向无功";
+                    break;
+                case "3":
+                    origrial = "反向有功";
+                    break;
+                case "4":
+                    origrial = "反向无功";
+                    break;
+                default:
+
+                    break;
+            }
+            return origrial;
+        }
+        private string Trans_GLYS(string origrial)
+        {
+            switch (origrial)
+            {
+                case "1":
+                    origrial = "0.5(L)";
+                    break;
+                case "2":
+                    origrial = "1";
+                    break;
+                case "3":
+                    origrial = "0.8(c)";
+                    break;
+                default:
+
+                    break;
+            }
+            return origrial;
+        }
+        private string Trans_FYDM(string origrial)
+        {
+            switch (origrial)
+            {
+                case "01":
+                    origrial = "合元";
+                    break;
+                case "02":
+                    origrial = "A相";
+                    break;
+                case "03":
+                    origrial = "B相";
+                    break;
+                case "04":
+                    origrial = "C相";
+                    break;
+                default:
+
+                    break;
+
+            }
+            return origrial;
+        }
+        private string Trans_FZLX(string origrial)
+        {
+            switch (origrial)
+            {
+                case "1":
+                    origrial = "平衡负载";
+                    break;
+                case "2":
+                    origrial = "不平衡负载A相";
+                    break;
+                case "3":
+                    origrial = "不平衡负载B相";
+                    break;
+                case "4":
+                    origrial = "不平衡负载C相";
+                    break;
+                default:
+
+                    break;
+
+            }
+            return origrial;
+        }
+        private string Trans_FZDL(string origrial)
+        {
+            switch (origrial)
+            {
+                case "01":
+                    origrial = "0.05Ib";
+                    break;
+
+                case "02":
+                    origrial = "0.1Ib";
+                    break;
+
+                case "05":
+                    origrial = "Ib";
+                    break;
+
+                case "06":
+                    origrial = "Imax";
+                    break;
+
+                case "07":
+                    origrial = "0.5Imax";
+                    break;
+
+                case "11":
+                    origrial = "0.02Ib";
+                    break;
+
+                case "12":
+                    origrial = "0.01Ib";
+                    break;
+                case "15":
+                    origrial = "0.03Ib";
+                    break;
+                default:
+                    break;
+            }
+            return origrial;
+        }
+        private string Trans_SSLX(string origrial)
+        {
+            switch (origrial)
+            {
+                case "121":
+                    origrial = "正有功总";
+                    break;
+
+                case "123":
+                    origrial = "正有功峰";
+                    break;
+
+                case "124":
+                    origrial = "正有功平";
+                    break;
+
+                case "125":
+                    origrial = "正有功谷";
+                    break;
+
+                case "131":
+                    origrial = "正无功总";
+                    break;
+
+                case "133":
+                    origrial = "正无功峰";
+                    break;
+
+                case "134":
+                    origrial = "正无功谷";
+                    break;
+
+                case "135":
+                    origrial = "正无功平";
+                    break;
+
+                case "221":
+                    origrial = "反有功总";
+                    break;
+
+                case "222":
+                    origrial = "反有功峰";
+                    break;
+
+                case "223":
+                    origrial = "反有功平";
+                    break;
+
+                case "224":
+                    origrial = "反有功谷";
+                    break;
+
+                case "231":
+                    origrial = "反无功总";
+                    break;
+
+                case "236":
+                    origrial = "反无功峰";
+                    break;
+
+                case "237":
+                    origrial = "反无功谷";
+                    break;
+
+                case "238":
+                    origrial = "反无功平";
+                    break;
+                default:
+                    break;
+
+            }
+            return origrial;
+        }
+        private string Trans_ZZFX(string origrial)
+        {
+            switch (origrial)
+            {
+                case "121":
+                    origrial = "正有功总";
+                    break;
+
+                case "123":
+                    origrial = "正有功峰";
+                    break;
+
+                case "124":
+                    origrial = "正有功平";
+                    break;
+
+                case "125":
+                    origrial = "正有功谷";
+                    break;
+
+                case "131":
+                    origrial = "正无功总";
+                    break;
+
+                case "133":
+                    origrial = "正无功峰";
+                    break;
+
+                case "134":
+                    origrial = "正无功谷";
+                    break;
+
+                case "135":
+                    origrial = "正无功平";
+                    break;
+
+                case "221":
+                    origrial = "反有功总";
+                    break;
+
+                case "222":
+                    origrial = "反有功峰";
+                    break;
+
+                case "223":
+                    origrial = "反有功平";
+                    break;
+
+                case "224":
+                    origrial = "反有功谷";
+                    break;
+
+                case "231":
+                    origrial = "反无功总";
+                    break;
+
+                case "236":
+                    origrial = "反无功峰";
+                    break;
+
+                case "237":
+                    origrial = "反无功谷";
+                    break;
+
+                case "238":
+                    origrial = "反无功平";
+                    break;
+                default:
+                    break;
+
+            }
+            return origrial;
+        }
+        #endregion
+       
     }
 }
