@@ -19,7 +19,8 @@ namespace SoftType_S
 
         public static string str_GZDBH = "", strXBDM = "" ,strJDTime = "";
         public static string str_pkId = "";
-        public static string str_DQBM = "";
+        public static string str_DQBM = OperateData.FunctionXml.ReadElement("NewUser/CloumMIS/Item", "Name", "CompanyNum", "Value", "", System.AppDomain.CurrentDomain.BaseDirectory + @"\config\NewBaseInfo.xml");
+
         public static string MeterZCBH = "";
         public ObservableCollection<MeterBaseInfoFactor> GetBaseInfo(string CheckTime, string SQL)
         {

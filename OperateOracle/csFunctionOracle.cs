@@ -135,8 +135,10 @@ namespace OperateOracle
                 return -1;
             }
         }
+        public static string str_DQBM = OperateData.FunctionXml.ReadElement("NewUser/CloumMIS/Item", "Name", "CompanyNum", "Value", "", System.AppDomain.CurrentDomain.BaseDirectory + @"\config\NewBaseInfo.xml");
+        public static string str_Path = OperateData.FunctionXml.ReadElement("NewUser/CloumMIS/Item", "Name", "txt_Report", "Value", "", System.AppDomain.CurrentDomain.BaseDirectory + @"\config\NewBaseInfo.xml");
 
-        public DataTable GetZcbhTable(string MeterZcbh,string Sql)
+        public DataTable GetZcbhTable(string Sql)
         {
             DataTable dt = new DataTable ();
             using (OracleConnection conn = new OracleConnection(OracleLink))
@@ -164,11 +166,54 @@ namespace OperateOracle
 
         }
 
-        public static void ExportEasy(DataTable dtSource, string strFileName)
+        public  void ExportEasy(DataTable dtSource, string strFileName)
         {
             HSSFWorkbook workbook = new HSSFWorkbook();
-            ISheet sheet = workbook.CreateSheet();
+            ISheet sheet = workbook.CreateSheet("基本信息");
 
+            //填充表头   
+            IRow dataRow = sheet.CreateRow(0);
+            foreach (DataColumn column in dtSource.Columns)
+            {
+                dataRow.CreateCell(column.Ordinal).SetCellValue(column.ColumnName);
+            }
+             //填充内容   
+            for (int i = 0; i < dtSource.Rows.Count; i++)
+            {
+                dataRow = sheet.CreateRow(i + 1);
+                for (int j = 0; j < dtSource.Columns.Count; j++)
+                {
+                    dataRow.CreateCell(j).SetCellValue(dtSource.Rows[i][j].ToString());
+                }
+            }
+            for (int i = 0; i <= dtSource.Columns.Count; i++)
+            {
+                sheet.AutoSizeColumn(i);
+            }
+
+
+            //保存   
+            using (MemoryStream ms = new MemoryStream())
+            {
+                using (FileStream fs = new FileStream(strFileName, FileMode.Create, FileAccess.Write))
+                {
+                    workbook.Write(fs);
+                }
+            }
+         
+        }
+         public static void ExportEasy(DataTable dtSource, string strFileName,string SheetName)
+        {
+            HSSFWorkbook workbook = new HSSFWorkbook();
+            
+            using (FileStream fs = File.Open(strFileName, FileMode.Open,
+          FileAccess.Read, FileShare.ReadWrite))
+            {
+                //把xls文件读入workbook变量里，之后就可以关闭了  
+                workbook = new HSSFWorkbook(fs);
+                fs.Close();
+            }
+            ISheet sheet = workbook.CreateSheet(SheetName);
             //填充表头   
             IRow dataRow = sheet.CreateRow(0);
             foreach (DataColumn column in dtSource.Columns)
@@ -203,6 +248,251 @@ namespace OperateOracle
          
         }
 
+        #region 导出OracleMis 中间库的信息到Excel
+        public string OutPutAllInfoToExcel(string MeterZCBH)
+         {
+
+             try
+             {
+
+                 DataTable BaseInfo = new DataTable();
+                 BaseInfo = MisBaseTable(MeterZCBH);
+                 ExportEasy(BaseInfo, str_Path + @"\" + MeterZCBH + @".xls");
+                 BaseInfo = MisErrorTable(MeterZCBH);
+                 ExportEasy(BaseInfo, str_Path + @"\" + MeterZCBH + @".xls", "基本误差");
+                 BaseInfo = MisRJSTable(MeterZCBH);
+                 ExportEasy(BaseInfo, str_Path + @"\" + MeterZCBH + @".xls", "日计时误差");
+                 BaseInfo = MisXLTable(MeterZCBH);
+                 ExportEasy(BaseInfo, str_Path + @"\" + MeterZCBH + @".xls", "电能表需量信息");
+                 BaseInfo = MisSDTQTable(MeterZCBH);
+                 ExportEasy(BaseInfo, str_Path + @"\" + MeterZCBH + @".xls", "时段投切数据");
+                 BaseInfo = MisFYTable(MeterZCBH);
+                 ExportEasy(BaseInfo, str_Path + @"\" + MeterZCBH + @".xls", "封印信息");
+                 BaseInfo = MisSSTable(MeterZCBH);
+                 ExportEasy(BaseInfo, str_Path + @"\" + MeterZCBH + @".xls", "电能表示数信息");
+                 BaseInfo = MisZZTable(MeterZCBH);
+                 ExportEasy(BaseInfo, str_Path + @"\" + MeterZCBH + @".xls", "电能表走字信息");
+                 return "导出成功";
+
+             }
+             catch (Exception Excel_E)
+             {
+                 return "导出失败："+Excel_E.ToString();
+             }
+           
+             return "";
+        }
+        private DataTable MisBaseTable(string METERzcbh)
+        {
+            DataTable dt = new DataTable();
+            string sql=string.Format("SELECT * FROM VT_SB_JKDNBJDJL WHERE ZCBH='{0}' AND DQBM='{1}'", METERzcbh, str_DQBM);
+            dt = GetZcbhTable(sql);
+            try
+            {
+                for (int i = 0; i < dt.Columns.Count; i++)
+                {
+                    if (BaseInfoColumnName.ContainsKey(dt.Columns[i].ColumnName))
+                    {
+                        dt.Columns[i].ColumnName = BaseInfoColumnName[dt.Columns[i].ColumnName.ToString().Trim()];
+                    }
+                    
+                }
+            }
+            catch (Exception BaseinfoE)
+            { 
+            
+            }
+            return dt;
+        }
+        private DataTable MisErrorTable(string METERzcbh)
+        {
+            DataTable dt = new DataTable();
+            string sql = string.Format("SELECT * FROM VT_SB_JKDNBJDWC WHERE ZCBH='{0}' AND DQBM='{1}'", METERzcbh, str_DQBM);
+            dt = GetZcbhTable(sql);
+            try
+            {
+                for (int i = 0; i < dt.Columns.Count; i++)
+                {
+                    if (ErrorInfoColumnName.ContainsKey(dt.Columns[i].ColumnName))
+                    {
+                        dt.Columns[i].ColumnName = ErrorInfoColumnName[dt.Columns[i].ColumnName.ToString().Trim()];
+                    }
+
+                }
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    dt.Rows[i][2] = TransGLFX(dt.Rows[i][2].ToString().Trim());
+                    dt.Rows[i][3] = Trans_GLYS(dt.Rows[i][3].ToString().Trim());
+                    dt.Rows[i][4] = Trans_FZDL(dt.Rows[i][4].ToString().Trim());
+                    dt.Rows[i][5] = Trans_XBDM(dt.Rows[i][5].ToString().Trim());
+                    dt.Rows[i][6] = Trans_FZLX(dt.Rows[i][6].ToString().Trim());
+                    dt.Rows[i][7] = Trans_FYDM(dt.Rows[i][7].ToString().Trim());
+
+                }
+            }
+            catch (Exception BaseinfoE)
+            {
+
+            }
+            return dt;
+        }
+        private DataTable MisRJSTable(string METERzcbh)
+        {
+            DataTable dt = new DataTable();
+            string sql = string.Format("SELECT * FROM vt_sb_jkrjswc WHERE ZCBH='{0}' AND DQBM='{1}'", METERzcbh, str_DQBM);
+            dt = GetZcbhTable(sql);
+            try
+            {
+                for (int i = 0; i < dt.Columns.Count; i++)
+                {
+                    if (RjsInfoColumnName.ContainsKey(dt.Columns[i].ColumnName))
+                    {
+                        dt.Columns[i].ColumnName = RjsInfoColumnName[dt.Columns[i].ColumnName.ToString().Trim()];
+                    }
+
+                }
+            }
+            catch (Exception BaseinfoE)
+            {
+
+            }
+            return dt;
+        }
+        private DataTable MisXLTable(string METERzcbh)
+        {
+            DataTable dt = new DataTable();
+            string sql = string.Format("SELECT * FROM VT_SB_JKXLWCJL WHERE ZCBH='{0}' AND DQBM='{1}'", METERzcbh, str_DQBM);
+            dt = GetZcbhTable(sql);
+            try
+            {
+                for (int i = 0; i < dt.Columns.Count; i++)
+                {
+                    if (JKXKInfoColumnName.ContainsKey(dt.Columns[i].ColumnName))
+                    {
+                        dt.Columns[i].ColumnName = JKXKInfoColumnName[dt.Columns[i].ColumnName.ToString().Trim()];
+                    }
+
+                }
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    dt.Rows[i][2] = Trans_FZDL(dt.Rows[i][2].ToString().Trim());
+                    
+
+                }
+            }
+            catch (Exception BaseinfoE)
+            {
+
+            }
+            return dt;
+        }
+        private DataTable MisSDTQTable(string METERzcbh)
+        {
+            DataTable dt = new DataTable();
+            string sql = string.Format("SELECT * FROM VT_SB_JKSDTQWCJL WHERE ZCBH='{0}' AND DQBM='{1}'", METERzcbh, str_DQBM);
+            dt = GetZcbhTable(sql);
+            try
+            {
+                for (int i = 0; i < dt.Columns.Count; i++)
+                {
+                    if (JKSDTQInfoColumnName.ContainsKey(dt.Columns[i].ColumnName))
+                    {
+                        dt.Columns[i].ColumnName = JKSDTQInfoColumnName[dt.Columns[i].ColumnName.ToString().Trim()];
+                    }
+
+                }
+            }
+            catch (Exception BaseinfoE)
+            {
+
+            }
+            return dt;
+        }
+        private DataTable MisFYTable(string METERzcbh)
+        {
+            DataTable dt = new DataTable();
+            string sql = string.Format("SELECT * FROM VT_SB_JKFYBGJL WHERE ZCBH='{0}' AND DQBM='{1}'", METERzcbh, str_DQBM);
+            dt = GetZcbhTable(sql);
+            try
+            {
+                for (int i = 0; i < dt.Columns.Count; i++)
+                {
+                    if (JKFYInfoColumnName.ContainsKey(dt.Columns[i].ColumnName))
+                    {
+                        dt.Columns[i].ColumnName = JKFYInfoColumnName[dt.Columns[i].ColumnName.ToString().Trim()];
+                    }
+
+                }
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    dt.Rows[i][4] = Trans_FYWZDM(dt.Rows[i][4].ToString().Trim());
+
+
+                }
+            }
+            catch (Exception BaseinfoE)
+            {
+
+            }
+            return dt;
+        }
+        private DataTable MisSSTable(string METERzcbh)
+        {
+            DataTable dt = new DataTable();
+            string sql = string.Format("SELECT * FROM VT_SB_JKDNBSSJL WHERE ZCBH='{0}' AND DQBM='{1}'", METERzcbh, str_DQBM);
+            dt = GetZcbhTable(sql);
+            try
+            {
+                for (int i = 0; i < dt.Columns.Count; i++)
+                {
+                    if (JKSSInfoColumnName.ContainsKey(dt.Columns[i].ColumnName))
+                    {
+                        dt.Columns[i].ColumnName = JKSSInfoColumnName[dt.Columns[i].ColumnName.ToString().Trim()];
+                    }
+
+                }
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    dt.Rows[i][2] = Trans_SSLX(dt.Rows[i][2].ToString().Trim());
+
+
+                }
+            }
+            catch (Exception BaseinfoE)
+            {
+
+            }
+            return dt;
+        }
+        private DataTable MisZZTable(string METERzcbh)
+        {
+            DataTable dt = new DataTable();
+            string sql = string.Format("SELECT * FROM VT_SB_JKDNBZZJL WHERE ZCBH='{0}' AND DQBM='{1}'", METERzcbh, str_DQBM);
+            dt = GetZcbhTable(sql);
+            try
+            {
+                for (int i = 0; i < dt.Columns.Count; i++)
+                {
+                    if (JKZZInfoColumnName.ContainsKey(dt.Columns[i].ColumnName))
+                    {
+                        dt.Columns[i].ColumnName = JKZZInfoColumnName[dt.Columns[i].ColumnName.ToString().Trim()];
+                    }
+
+                }
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    dt.Rows[i][2] = Trans_SSLX(dt.Rows[i][2].ToString().Trim());
+
+
+                }
+            }
+            catch (Exception BaseinfoE)
+            {
+
+            }
+            return dt;
+        }
+        #endregion 
         public csFunctionOracle()
         {
             #region 列头
@@ -425,6 +715,47 @@ namespace OperateOracle
                 case "04":
                     origrial = "C相";
                     break;
+                default:
+
+                    break;
+
+            }
+            return origrial;
+        }
+        private string Trans_XBDM(string origrial)
+        {
+            switch (origrial)
+            {
+                case "01":
+                    origrial = "单相";
+                    break;
+                case "02":
+                    origrial = "三相";
+                    break;
+                default:
+
+                    break;
+
+            }
+            return origrial;
+        }
+        private string Trans_FYWZDM(string origrial)
+        {
+            switch (origrial)
+            {
+                case "01":
+                    origrial = "左耳封";
+                    break;
+                case "02":
+                    origrial = "右耳封";
+                    break;
+                case "05":
+                    origrial = "表盖封印";
+                    break;
+                case "07":
+                    origrial = "编程小门";
+                    break;
+                
                 default:
 
                     break;

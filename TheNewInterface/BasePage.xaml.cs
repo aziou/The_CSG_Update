@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
+
 namespace TheNewInterface
 {
     /// <summary>
@@ -67,6 +68,7 @@ namespace TheNewInterface
             cmb_Seal03.Text = OperateData.FunctionXml.ReadElement(strSection, "Name", "cmb_Seal03", "Value", "", BaseConfigPath);
             cmb_Seal02.Text = OperateData.FunctionXml.ReadElement(strSection, "Name", "cmb_Seal02", "Value", "", BaseConfigPath);
             cmb_Seal01.Text = OperateData.FunctionXml.ReadElement(strSection, "Name", "cmb_Seal01", "Value", "", BaseConfigPath);
+            txt_Report.Text = OperateData.FunctionXml.ReadElement(strSection, "Name", "txt_Report", "Value", "", BaseConfigPath);
         }
 
         #endregion
@@ -219,6 +221,32 @@ namespace TheNewInterface
         private void cmb_Company_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             CmbChangeValue(cmb_Company, txt_CompanyNum,true);
+        }
+
+        private void btn_SetReportPath_Click(object sender, RoutedEventArgs e)
+        {
+
+            System.Windows.Forms.FolderBrowserDialog dialog = new System.Windows.Forms.FolderBrowserDialog();
+            dialog.Description = "请选择文件路径";
+            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                string foldPath = dialog.SelectedPath;
+
+                MessageBox.Show("已选择文件夹:" + foldPath, "选择文件夹提示", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
+            }
+            //Microsoft.Win32.OpenFileDialog dialog =
+
+            //      new Microsoft.Win32.OpenFileDialog();
+
+            //dialog.Filter = "数据库文件|*.mdb;*.accdb";
+
+            //if (dialog.ShowDialog() == true)
+            //{
+
+            txt_Report.Text = dialog.SelectedPath;  //   
+
+
+            //}
         }
   
     }

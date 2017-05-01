@@ -21,6 +21,9 @@
     <Item Name="txt_IPADDRESS" Value="10.150.12.63" />
     <Item Name="txt_PORT" Value="8015" />
     <Item Name="txt_PASSWORD" Value="abc" />
+    <Item Name="CompanyNum" Value="" />
+    <Item Name="txt_Report" Value="C:\Users\screw\Desktop\12345" />
+    <Item Name="txt_CompanyNum" Value="" />
   </CloumMIS>
   <User>
     <Item UserName="lees" UserNumber="cbazzxc" />

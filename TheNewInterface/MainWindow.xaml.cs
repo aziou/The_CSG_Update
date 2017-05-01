@@ -416,21 +416,31 @@ namespace TheNewInterface
         private void btn_OutPutExcel_Click(object sender, RoutedEventArgs e)
         {
             OperateOracle.csFunctionOracle function = new OperateOracle.csFunctionOracle();
-            DataTable dtable = new DataTable();
-           dtable= function.GetZcbhTableLocal("B16018871A", "select * from meter_info where avr_asset_no = 'B16018871A' ");
-           dtable.Rows[0][0] = "12345679";
 
-           for (int i = 0; i < dtable.Columns.Count; i++)
-           {
-               dtable.Columns[i].ColumnName = "嫦娥"+i.ToString();
-           }
-               //foreach (DataColumn c in dtable.Columns)
-               //{
-               //    // Console.WriteLine(c.ColumnName);
-               //    lis_Col.Items.Add(c.ColumnName);
-               //} 
-           OperateOracle.csFunctionOracle.ExportEasy(dtable, @"C:\Users\screw\Desktop\12345\demo.xls");
-           MessageBox.Show("ok");
+            if (txt_MisZcbh.Text == "" || txt_MisZcbh.Text == null)
+            {
+                MessageBox.Show("资产编号为空，请输入", "提示");
+                return;
+            }
+            string Message = "";
+           Message=  function.OutPutAllInfoToExcel(txt_MisZcbh.Text.ToString().Trim());
+           MessageBox.Show(Message);
+
+           // DataTable dtable = new DataTable();
+           //dtable= function.GetZcbhTableLocal("B16018871A", "select * from meter_info where avr_asset_no = 'B16018871A' ");
+           //dtable.Rows[0][0] = "12345679";
+
+           //for (int i = 0; i < dtable.Columns.Count; i++)
+           //{
+           //    dtable.Columns[i].ColumnName = "嫦娥"+i.ToString();
+           //}
+           //    //foreach (DataColumn c in dtable.Columns)
+           //    //{
+           //    //    // Console.WriteLine(c.ColumnName);
+           //    //    lis_Col.Items.Add(c.ColumnName);
+           //    //} 
+           //function.ExportEasy(dtable, @"C:\Users\screw\Desktop\12345\demo.xls");
+           //MessageBox.Show("ok");
         }
         #endregion
       
