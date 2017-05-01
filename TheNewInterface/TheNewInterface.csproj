@@ -131,6 +131,10 @@
       <Project>{BD95F477-36D8-4B0A-A7FF-469EE9489426}</Project>
       <Name>OperateData</Name>
     </ProjectReference>
+    <ProjectReference Include="..\OperateOracle\OperateOracle.csproj">
+      <Project>{C8D1AFC4-8DD4-4037-AE42-C5E07E3B11F8}</Project>
+      <Name>OperateOracle</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SoftType_G\SoftType_G.csproj">
       <Project>{743689C5-FAB0-497F-879A-1EBA5C0B1A86}</Project>
       <Name>SoftType_G</Name>

@@ -16,7 +16,7 @@ using System.Collections.ObjectModel;
 using System.Threading;
 using System.Diagnostics;
 using System.Windows.Threading;
-
+using System.Data;
 namespace TheNewInterface
 {
     /// <summary>
@@ -41,12 +41,23 @@ namespace TheNewInterface
 
         private void btn_update_Click(object sender, RoutedEventArgs e)
         {
-            //if (cmb_WorkNumList.Text.Trim() == "")
-            //{
-            //    MessageBox.Show("请选择工单号！");
-            //    return;
-            //}
+            if (cmb_WorkNumList.Text.Trim() == "")
+            {
+                MessageBox.Show("请选择工单号！");
+                return;
+            }
             //OperateData.FunctionXml.UpdateElement("NewUser/CloumMIS/Item", "Name", "TheWorkNum", "Value", cmb_WorkNumList.Text.ToString(), BaseConfigPath);
+            if (MessageBox.Show("请确定你要上传的工作单为：" + cmb_WorkNumList.Text, "提示", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
+            {
+                OperateData.FunctionXml.UpdateElement("NewUser/CloumMIS/Item", "Name", "TheWorkNum", "Value", cmb_WorkNumList.Text, BaseConfigPath);
+
+            }
+            else
+            {
+                return;
+            }
+
+
             OperateData.FunctionXml.UpdateElement("NewUser/CloumMIS/Item", "Name", "TheWorkNum", "Value", "07522300987", BaseConfigPath);
 
             int MeterCount = ViewModel.AllMeterInfo.CreateInstance().MeterBaseInfo.Count;
@@ -57,6 +68,11 @@ namespace TheNewInterface
                 {
                     UpDateMeterId.Add(ViewModel.AllMeterInfo.CreateInstance().MeterBaseInfo[i].PK_LNG_METER_ID);
                 }
+            }
+            if (UpDateMeterId.Count == 0)
+            {
+                MessageBox.Show("你没有选择要上传的表", "提示", MessageBoxButton.YesNo, MessageBoxImage.Error);
+                return;
             }
             this.UpdateProgress.Maximum = UpDateMeterId.Count;
             listBox_UpInfo.Items.Clear();
@@ -154,13 +170,17 @@ namespace TheNewInterface
             { }
             finally
             {
+                if (listBox_UpInfo.Items.Count != 0)
+                {
+                    this.listBox_UpInfo.Dispatcher.Invoke(new Action(() =>
+                    {
 
-                this.listBox_UpInfo.Dispatcher.Invoke(new Action(() => {
+                        this.listBox_UpInfo.UpdateLayout();
 
-                    this.listBox_UpInfo.UpdateLayout();
-                    
-                    this.listBox_UpInfo.ScrollIntoView(listBox_UpInfo.Items[listBox_UpInfo.Items.Count-1]);
-                }));
+                        this.listBox_UpInfo.ScrollIntoView(listBox_UpInfo.Items[listBox_UpInfo.Items.Count - 1]);
+                    }));
+                }
+              
 
             }
            
@@ -386,6 +406,30 @@ namespace TheNewInterface
             //listBox_UpInfo.UpdateLayout();
             listBox_UpInfo.ScrollIntoView(listBox_UpInfo.Items[listBox_UpInfo.Items.Count - 1]);
         }
+
+        #region Tab Excel
+        private void btn_Search_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btn_OutPutExcel_Click(object sender, RoutedEventArgs e)
+        {
+            OperateOracle.csFunctionOracle function = new OperateOracle.csFunctionOracle();
+            DataTable dtable = new DataTable();
+           dtable= function.GetZcbhTableLocal("B16018871A", "select * from meter_info where avr_asset_no = 'B16018871A' ");
+           dtable.Rows[0][0] = "12345679";
+           
+           foreach (DataColumn c in dtable.Columns)
+           {
+              // Console.WriteLine(c.ColumnName);
+               lis_Col.Items.Add(c.ColumnName);
+           } 
+           OperateOracle.csFunctionOracle.ExportEasy(dtable, @"C:\Users\screw\Desktop\12345\demo.xls");
+           MessageBox.Show("ok");
+        }
+        #endregion
+      
 
         
     }

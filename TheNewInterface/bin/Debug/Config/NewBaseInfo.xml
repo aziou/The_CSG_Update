@@ -15,7 +15,12 @@
     <Item Name="AccessLink" Value="Provider=Microsoft.Jet.OleDb.4.0;Data Source=D:\Company\CLOU\Õ¿½­\20170426\DataBase\DataBase\ClouMeterData.mdb;Persist Security Info=False" />
     <Item Name="TheWorkNum" Value="07522300987" />
     <Item Name="" Value="" />
-    <Item Name="OracleLink" Value="" />
+    <Item Name="OracleLink" Value="Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=System.Windows.Controls.TextBox: 10.150.12.63)(PORT=System.Windows.Controls.TextBox: 8015)))(CONNECT_DATA=(SERVICE_NAME= System.Windows.Controls.TextBox: pms_sc)));User Id=System.Windows.Controls.TextBox: lee; Password=System.Windows.Controls.PasswordBox" />
+    <Item Name="txt_ServerName" Value="pms_sc" />
+    <Item Name="txt_USERNAME" Value="lee" />
+    <Item Name="txt_IPADDRESS" Value="10.150.12.63" />
+    <Item Name="txt_PORT" Value="8015" />
+    <Item Name="txt_PASSWORD" Value="abc" />
   </CloumMIS>
   <User>
     <Item UserName="lees" UserNumber="cbazzxc" />

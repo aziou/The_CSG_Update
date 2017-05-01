@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Driver_Interface", "Driver_
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mis_Interface_Driver", "Mis_Interface_Driver\Mis_Interface_Driver.csproj", "{53F67282-5E11-4670-BAFC-0EBC0AEB0F4A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OperateOracle", "OperateOracle\OperateOracle.csproj", "{C8D1AFC4-8DD4-4037-AE42-C5E07E3B11F8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -95,6 +97,16 @@ Global
 		{53F67282-5E11-4670-BAFC-0EBC0AEB0F4A}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{53F67282-5E11-4670-BAFC-0EBC0AEB0F4A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{53F67282-5E11-4670-BAFC-0EBC0AEB0F4A}.Release|x86.ActiveCfg = Release|Any CPU
+		{C8D1AFC4-8DD4-4037-AE42-C5E07E3B11F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8D1AFC4-8DD4-4037-AE42-C5E07E3B11F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8D1AFC4-8DD4-4037-AE42-C5E07E3B11F8}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{C8D1AFC4-8DD4-4037-AE42-C5E07E3B11F8}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{C8D1AFC4-8DD4-4037-AE42-C5E07E3B11F8}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C8D1AFC4-8DD4-4037-AE42-C5E07E3B11F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8D1AFC4-8DD4-4037-AE42-C5E07E3B11F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8D1AFC4-8DD4-4037-AE42-C5E07E3B11F8}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{C8D1AFC4-8DD4-4037-AE42-C5E07E3B11F8}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{C8D1AFC4-8DD4-4037-AE42-C5E07E3B11F8}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
